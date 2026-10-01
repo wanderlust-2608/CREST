@@ -1,10 +1,4 @@
 # Methodology, Results and Discussion
-> **What the numbers are.** The hackathon corpus has no answer key, so the quantitative results come from (i) a
-> synthetic call centre whose true effects are known, and (ii) checks on the real data that need no causal truth: the
-> event labeller against a blind hand-labelled sample, a manual read of real transcripts, and the question parser.
-> Causal estimates for the real corpus come from running the pipeline on it (README §3) and are not reproduced here.
-> Every synthetic number can be regenerated with `python -m crest demo`.
-
 **Abstract.** Customer-service calls record escalations, refund requests and churn threats, but not *why* they happen.
 CREST turns about 19,600 calls into evidence-based causal explanations that cite the responsible dialogue turns (Task 1)
 and keeps the analytical context across follow-up questions (Task 2). Offline, every call is cut into decision moments
