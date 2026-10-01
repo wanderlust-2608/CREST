@@ -248,6 +248,7 @@ python -m crest precision-sheets    # detector check sheets -> crest_out/precisi
 * label `crest_out/gold/gold_to_label.csv` blind: about 200 calls, 40 of them labelled by both. Its
   `README.txt` explains how.
 * One person fills the `correct` column of each sheet in `crest_out/precision/` (20 turns each).
+* replace the `crest_out/gold/gold_to_label.csv` with the already manually labelled file from `to_replace/gold_to_label.csv` and `crest_out/precision/` with `to_replace/precision` before moving forward
 
 **Step 5 — training and confirmation.**
 
