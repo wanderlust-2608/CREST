@@ -16,7 +16,7 @@ from .query import EVENT_PATTERNS, PRODUCT_RE, QuerySpec, _norm
 from .rationale import DONE, WINDOW, RationaleBuilder, _clip_quote, with_frequency
 from .rationale import placeholders as rationale_placeholders
 
-WRITER_VERSION = "template-v5"
+WRITER_VERSION = "template-v6"
 RANK_MIN_CALLS = 30
 RANK_MAX_GROUPS = 7
 COND_LABEL = {"ESC": "calls with an escalation", "REF": "calls with a refund episode", "CHURN": "calls with a churn threat",
@@ -310,6 +310,48 @@ class PackBuilder:
             out.append("the compared moments are still not alike enough")
         return out or ["the checks for a reliable estimate did not pass"]
 
+    def causal_evidence_summary(self) -> dict:
+        """Build a cross-event view for questions that do not name a specific event.
+
+        Only L2 factors are reported here: they failed at least one causal-evidence check,
+        so the system must not present them as confirmed causal effects. L3 factors are omitted
+        from the "not supported" list because they passed the full check suite.
+        """
+        events = []
+        for e in PRIMARY_EVENTS:
+            rows = self.factors_for(e, "all")
+            if not len(rows):
+                continue
+            failed = rows[rows["level"] == "L2"].copy()
+            items = []
+            for r in failed.head(4).to_dict("records"):
+                fid = r["factor_id"]
+                self._cf_placeholders[f"{fid}.att"] = fmt_pts(r["att"])
+                self._cf_placeholders[f"{fid}.ci"] = fmt_ci_pts(r["ci_low"], r["ci_high"])
+                reasons = []
+                for c in sorted(r.get("failed_checks", []),
+                                 key=lambda c: REASON_ORDER.index(c) if c in REASON_ORDER else 99):
+                    if c in PLAIN_REASON:
+                        reasons.append(PLAIN_REASON[c])
+                items.append({
+                    "id": fid, "short": r["behaviour_short"], "label": r["behaviour_label"],
+                    "level": r["level"], "att": float(r["att"]),
+                    "ci_low": float(r["ci_low"]), "ci_high": float(r["ci_high"]),
+                    "p_treated": float(r.get("p_treated")) if np.isfinite(r.get("p_treated", np.nan)) else None,
+                    "failed_checks": list(r.get("failed_checks", [])),
+                    "reasons": reasons[:3],
+                    "negative_control": bool(r.get("negative_control")),
+                })
+            nc = self.nc[(self.nc["event"] == e) & (self.nc["slice"] == "all")]
+            nc_flagged = bool(len(nc) and not nc["negative_controls_clean"].all()) if "negative_controls_clean" in nc else False
+            gm = ((self.art.report.get("gold_metrics") or {}).get("by_event") or {}).get(e) or {}
+            f1 = float(gm["f1"]) if gm.get("f1") is not None and np.isfinite(gm.get("f1", np.nan)) else None
+            if f1 is not None:
+                self._cf_placeholders[f"{e}.f1"] = f"{f1:.2f}"
+            events.append({"event": e, "name": EVENTS[e].name, "plural": EVENTS[e].plural,
+                           "factors": items, "negative_control_flagged": nc_flagged, "event_f1": f1})
+        return {"events": events, "available": bool(events)}
+
     def build(self, spec: QuerySpec, shown: list | None = None) -> dict:
         art, s = self.art, self.s
         e = spec.event
@@ -342,6 +384,11 @@ class PackBuilder:
         if spec.filters.get("call"):
             return self.call_pack(spec, pack)
         if e is None:
+            if spec.question_type in ("causal_failure", "counterevidence"):
+                self._cf_placeholders = {}
+                pack["causal_evidence"] = self.causal_evidence_summary()
+                ph.update(self._cf_placeholders)
+                return pack
             if spec.question_type == "behaviour" and spec.behaviour:
                 pack["behaviour_profile"] = self.behaviour_profile(spec)
                 ph.update(pack["behaviour_profile"].pop("placeholders"))
@@ -1783,6 +1830,56 @@ COUNT_ONLY_TYPES = ("how_often", "examples", "trend", "compare", "issues", "even
 RATIONALE_FIRST_TYPES = ("why", "what_to_change", "effect_of")
 
 
+def causal_evidence_sentences(pack: dict, spec: QuerySpec) -> list[dict]:
+    data = pack.get("causal_evidence") or {}
+    events = data.get("events") or []
+    out = []
+    if not events:
+        return [_S("No cross-event causal-evidence summary is available in this workspace.", "notice", core=True)]
+
+    if spec.question_type == "causal_failure":
+        out.append(_S("Across the supported events, the apparent explanations below were not confirmed as causal effects; "
+                      "they failed at least one predefined causal-evidence check.", "short", core=True))
+    else:
+        out.append(_S("Across the supported events, these behaviours can occur before an event without showing a clear "
+                      "difference from comparable non-event calls. They are descriptive patterns, not causal explanations.",
+                      "short", core=True))
+
+    for ev in events:
+        factors = ev.get("factors") or []
+        if spec.question_type == "counterevidence":
+            factors = [f for f in factors if not (f["ci_low"] > 0 or f["ci_high"] < 0)]
+            factors = sorted(factors, key=lambda f: (f.get("p_treated") is None, -(f.get("p_treated") or 0.0)))[:4]
+        if not factors:
+            continue
+        out.append(_S(f"For {ev['plural']}:", "notice", core=False))
+        if ev.get("event_f1") is not None:
+            out.append(_S(f"The event labeller F1 for this event is {{{ev['event']}.f1}} on the gold set; downstream rationale evidence therefore depends on the quality of the event labels.",
+                          "notice", core=False))
+        for f in factors:
+            fid = f["id"]
+            clear = f["ci_low"] > 0 or f["ci_high"] < 0
+            if clear:
+                rel = "higher" if f["att"] > 0 else "lower"
+                out.append(_S(f"{f['short']} is associated with a {rel} chance of {article(ev['name'])} {ev['name']} "
+                              f"later in the call ({{{fid}.att}}, {{{fid}.ci}}) [{fid}], but it was not a confirmed effect.",
+                              "factor", [fid], core=True))
+            else:
+                out.append(_S(f"No clear difference: {f['short']} is compatible with no difference in the chance of "
+                              f"{article(ev['name'])} {ev['name']} ({{{fid}.att}}, {{{fid}.ci}}) [{fid}].",
+                              "factor", [fid], core=True))
+            if f.get("reasons"):
+                out.append(_S("Not a confirmed effect: " + "; ".join(f["reasons"][:2]) + f" [{fid}].",
+                              "notice", [fid]))
+        if ev.get("negative_control_flagged"):
+            out.append(_S(f"The negative-control check flagged possible hidden bias for {ev['plural']}, so no finding for this "
+                          "event is presented as more than a warning sign.", "notice", core=True))
+
+    out.append(_S("The analysis distinguishes frequent pre-event patterns from causal evidence; a behaviour occurring before "
+                  "an event does not by itself show that it caused the event.", "caveat"))
+    out.append(_S("All numbers describe this corpus of calls, not customers in general.", "caveat"))
+    return out
+
 def _write_answer(pack: dict, spec: QuerySpec) -> list[dict]:
     S: list[dict] = []
     S += [_S(n["text"], "notice") for n in pack["notices"]
@@ -1794,6 +1891,8 @@ def _write_answer(pack: dict, spec: QuerySpec) -> list[dict]:
         return S
     if pack.get("call"):
         return S + call_sentences(pack, spec)
+    if pack.get("causal_evidence"):
+        return S + causal_evidence_sentences(pack, spec)
     if "event" not in pack:
         if pack.get("behaviour_profile"):
             return S + behaviour_profile_sentences(pack) + [_S("All numbers describe this corpus of calls, not customers in "

@@ -9,7 +9,8 @@ from .definitions import BEHAVIOURS, EVENTS, INDUSTRIES, PRIMARY_EVENTS, UNSUPPO
 from .lexicon import apply_slang, correct_spelling, translate
 
 QUESTION_TYPES = ("why", "how_often", "examples", "compare", "trend", "what_to_change", "effect_of", "describe_factor",
-                  "issues", "shared", "event_link", "behaviour", "overview", "help", "call", "unknown")
+                  "issues", "shared", "event_link", "behaviour", "overview", "help", "call",
+                  "causal_failure", "counterevidence", "unknown")
 UUID_RE = re.compile(r"\b([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?::\d+)?\b")
 CALL_WORD_RE = re.compile(r"\b(?:call|transcript|conversation|interaction|case|ticket|chat|record)s?\s*(?:id|number|no\.?)?\s*[:#]?\s*"
                           r"([0-9a-z][0-9a-z_.-]{2,}[0-9a-z])(?::\d+)?\b")
@@ -39,6 +40,28 @@ EVENT_PATTERNS = {
     "REF": r"\b(?:refunds?|refunded|money back|reimburs\w*|compensat\w*|chargebacks?|credit(?:s|ed)? back)\b",
     "CHURN": r"\b(?:churn\w*|cancel\w*|leav(?:e|es|ing) (?:the company|us)|switch\w* (?:provider|company|to)|quit(?:s|ting)?|attrition|retention|threat\w* to (?:leave|cancel|switch))\b",
 }
+
+# Questions that ask for evidence *against* a causal explanation rather than for a new explanation.
+CAUSAL_FAILURE_RE = re.compile(
+    r"(?:"
+    r"\b(?:which|what)\b.*\b(?:apparent|possible|claimed|suggested)\b.*\b(?:explanations?|causes?|factors?|reasons?)\b"
+    r".*\b(?:not supported|unsupported|not confirmed|ruled out|fail(?:ed)?|do not support|does not support)\b"
+    r".*\b(?:causal|causally|causal checks?|causal test)\b"
+    r"|\b(?:which|what)\b.*\b(?:explanations?|causes?|factors?|reasons?)\b"
+    r".*\b(?:not supported|unsupported|not confirmed|ruled out|not established)\b.*\b(?:causal|causally)\b"
+    r"|\b(?:which|what)\b.*\b(?:factors?|behaviou?rs?|signals?|findings?|effects?|results?|conclusions?)\b"
+    r".*(?:\b(?:not supported|unsupported|not confirmed|ruled out|not established)\b|\b(?:have|has) no clear causal evidence\b|\b(?:have|has) no causal evidence\b)"
+    r"|\b(?:which|what)\b.*\b(?:factors?|behaviou?rs?|signals?|findings?|results?|conclusions?)\b"
+    r".*\b(?:should not|shouldn't|cannot|can't|must not)\b.*\b(?:be interpreted|be treated|be described)\b.*\b(?:causal|causally)\b"
+    r"|\b(?:which|what)\b.*\b(?:factors?|behaviou?rs?|signals?|findings?|results?|conclusions?)\b"
+    r".*\b(?:as|to be|to interpret)\b.*\b(?:causal|causally)\b.*\b(?:unsupported|not supported|not confirmed|not established)\b"
+    r")")
+COUNTEREVIDENCE_RE = re.compile(
+    r"\b(?:behaviou?r|behaviou?rs|factors?|signals?|things?)\b.*\b(?:frequently|often|commonly)\b.*\b(?:before|preced(?:e|ed)|leading up to)\b"
+    r".*\b(?:do not|don't|does not|doesn't|fail to)\b.*\b(?:distinguish|differentiate|separate)\b"
+    r".*\b(?:event|non[- ]event|without (?:the )?event)\b")
+COMPLAINT_EVENT_RE = re.compile(r"\b(?:complaint|complaints|complain|complaining)\b")
+GENERIC_EVENT_RE = re.compile(r"\b(?:an|any|each|every)\s+(?:business\s+)?event\b|\bnon[- ]event\b")
 TYPE_PATTERNS = [
     ("what_to_change", r"\b(?:what (?:should|can|could) (?:we|agents?|the company|the team)|how (?:can|could|do|should) we (?:\w+ ){0,3}?(?:reduce|lower|prevent|avoid|cut|decrease|stop)|how to (?:reduce|lower|prevent|avoid|cut|decrease)|what (?:would|will) (?:reduce|lower|prevent|help)|recommend\w*|what to change|action items?)\b"),
     ("examples", r"\b(?:show me|give me (?:some |a few |an? )?(?:examples?|quotes?|calls?)|examples?|quotes?|excerpts?|^(?:the |some |all )?(?:transcripts?|calls?) where|(?:list|pull|get|find|see|show)(?: me)?(?: the| some| all)? (?:calls|transcripts?)(?: where)?|evidence of)\b"),
@@ -49,7 +72,9 @@ TYPE_PATTERNS = [
                r"(?:what|which) (?:kinds? of |types? of )?(?:issues|problems|topics|themes|complaints)|"
                r"what (?:do|did|are) (?:customers|callers|people) (?:say|saying|mention|mentioning|talk about|talking about|"
                r"rais(?:e|ing))|topics?|themes?)\b"),
-    ("effect_of", r"\b(?:effect of|impact of|affect\w*|influence\w*|does .{1,40} (?:cause|lead to|increase|decrease|reduce|raise|lower|drive|trigger|prevent)|is .{1,40} (?:linked|associated|related|correlated) (?:to|with))\b"),
+    ("causal_failure", CAUSAL_FAILURE_RE.pattern),
+    ("counterevidence", COUNTEREVIDENCE_RE.pattern),
+    ("effect_of", r"\b(?:effect of|impact of|affect\w*|influence\w*|contribut(?:e|es|ed|ing) to|what (?:usually|often|tends to) happen(?:s)? before|what (?:usually|often|tends to) precede(?:s)?|does .{1,40} (?:cause|lead to|increase|decrease|reduce|raise|lower|drive|trigger|prevent)|is .{1,40} (?:linked|associated|related|correlated) (?:to|with)|precede|preceding|before|prior to)\b"),
     ("describe_factor", r"\b(?:factor\s*#?\s*\d+|factor f\d+|\bf\d+\b|tell me more about|explain (?:the )?(?:first|second|third|fourth|fifth|\d+(?:st|nd|rd|th)?) (?:factor|one|reason))\b"),
     ("why", r"\b(?:why|what causes?|what drives?|drivers?|root causes?|reasons? (?:for|behind|why)|what leads? to|what makes|what triggers?|explain (?:the )?(?:escalations?|refunds?|churn))\b"),
 ]
@@ -661,7 +686,7 @@ class QueryParser:
             spec.unsupported = [u for u in spec.unsupported if u.get("attribute") != "plan or segment"]
             have = [f"{k}: " + ", ".join(self.account[k][:8]) for k in ("plan", "segment") if self.account.get(k)]
             spec.ambiguous = spec.ambiguous or ("which plan or segment (the data has " + "; ".join(have) + ")")
-        if spec.event is None and not spec.behaviour and not spec.factor_ref and not spec.unsupported and (
+        if spec.event is None and not spec.behaviour and not spec.factor_ref and not spec.unsupported and not GENERIC_EVENT_RE.search(t) and (
                 (spec.question_type in ("what_to_change", "why") and
                  re.search(r"\b(?:agents?|behaviou?rs?|factors?|staff|reps?|we|our team)\b", t)) or
                 (spec.question_type == "unknown" and re.search(r"\b(?:behaviou?rs?|factors?)\b", t))):
@@ -679,7 +704,13 @@ class QueryParser:
                     any(spec.filters.get(k) for k in ("industry", "brand", "tier", "plan", "segment", "tenure", "self_status"))
                     and spec.question_type in ("unknown", "why", "how_often", "examples")):
                 spec.question_type = "overview"
-        if spec.event is None and spec.question_type not in ("describe_factor", "behaviour", "overview", "help") and \
+        if spec.event is None and COMPLAINT_EVENT_RE.search(t) and not find_events(t):
+            spec.ambiguous = ("Complaint is not a separately labelled business event in this workspace. "
+                              "Ask about an escalation, refund episode or churn threat instead.")
+        if spec.event is None and spec.question_type in ("causal_failure", "counterevidence"):
+            # These questions can be answered across all supported events; do not force an arbitrary event.
+            spec.ambiguous = "" if not spec.ambiguous.startswith("Complaint is not") else spec.ambiguous
+        elif spec.event is None and spec.question_type not in ("describe_factor", "behaviour", "overview", "help", "causal_failure", "counterevidence") and \
                 not spec.unsupported:
             spec.ambiguous = spec.ambiguous or "which business event (escalation, refund or churn) is the question about?"
         if call_ids:
@@ -755,17 +786,35 @@ def llm_normalize(llm, text: str) -> dict:
 
 def llm_parse(llm, text: str, rules: QuerySpec) -> QuerySpec:
     system = ("Map a manager's question about customer-service calls to fixed slots. Use only the allowed values. "
-              "event: ESC escalation, REF refund episode, CHURN churn threat (or a secondary event). "
-              "presupposition_*: a causal claim the question takes for granted (e.g. 'why does empathy cause escalations' "
-              "-> empathy, +1); 'none'/0 when the question only asks.")
+              "Never infer a business event that is not explicitly named or unambiguously paraphrased in the question. "
+              "If the question says 'an event', 'any event', 'non-event', or otherwise leaves the event unspecified, use "
+              "event='none'. event: ESC escalation, REF refund episode, CHURN churn threat (or a secondary event). "
+              "question_type may be causal_failure for questions asking which apparent explanations are not supported by "
+              "causal checks, or counterevidence for questions about frequent pre-event behaviours that do not distinguish "
+              "event from non-event calls. presupposition_*: a causal claim the question takes for granted (e.g. 'why "
+              "does empathy cause escalations' -> empathy, +1); 'none'/0 when the question only asks.")
     out = llm.json_call(system=system, user=text, schema=LLM_SPEC_SCHEMA, purpose="parse_query", effort="low")
     spec = QuerySpec.from_dict(rules.to_dict())
     spec.parser = "llm+rules"
-    spec.event = None if out["event"] == "none" else out["event"]
-    spec.question_type = out["question_type"]
+    # Rules are the hard safety boundary for event selection: the LLM may refine a rule parse,
+    # but it must never invent an event that the question did not specify.
+    rule_events = list(dict.fromkeys(e for _, e in event_spans(text)))
+    llm_event = None if out["event"] == "none" else out["event"]
+    if rules.event:
+        spec.event = rules.event
+    elif rule_events:
+        spec.event = rule_events[0]
+    else:
+        spec.event = None
+    rule_qt = next((qt for qt, pat in TYPE_PATTERNS if re.search(pat, _norm(text))), None)
+    spec.question_type = rule_qt or out["question_type"]
+    if spec.question_type in ("causal_failure", "counterevidence"):
+        spec.event = None if not rules.event else rules.event
     if out["industry"]:
         spec.filters["industry"] = out["industry"]
     spec.behaviour = None if out["behaviour"] == "none" else out["behaviour"]
+    if rules.behaviour:
+        spec.behaviour = rules.behaviour
     spec.leading = bool(out["leading"]) or rules.leading
     if out["presupposition_behaviour"] != "none" and out["presupposition_direction"] != 0 and spec.event:
         spec.presuppositions = [{"behaviour": out["presupposition_behaviour"], "event": spec.event,

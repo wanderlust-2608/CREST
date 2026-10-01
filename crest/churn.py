@@ -7,7 +7,7 @@ import pandas as pd
 
 DISENGAGE_RE = re.compile(
     r"\b(?:i'?m|i am|we'?re|we are)\s+(?:so\s+|just\s+|really\s+|totally\s+|completely\s+|honestly\s+)?(?:done|finished|"
-    r"through)\s+with\s+(?:you\b(?!\s+(?:now|for (?:now|today)))|your\s+(?:company|service|hotels?|brand|airline|bank|"
+    r"through)\s+with\s+(?:you(?:\s+(?:people|guys|all))?\b(?!\s+(?:now|for (?:now|today)))|your\s+(?:company|service|hotels?|brand|airline|bank|"
     r"business|people)|y'?all|this\s+(?:company|hotel|place|brand|airline|bank|service|chain))"
     r"|\bi'?ve had (?:it|enough)\s+with\s+(?:you|your|this)\b"
     r"|\b(?:you(?:'ve| have)?\s+)?(?:just\s+)?lost\s+(?:a|my|me as a|one)\s+(?:loyal\s+|long-?time\s+)?(?:customer|client|guest|"
@@ -20,7 +20,11 @@ DISENGAGE_RE = re.compile(
     r"|\b(?:end|terminate)\s+(?:this|our|the|my)\s+(?:relationship|contract|membership|business)\b"
     r"|\bthis is the last (?:time|straw)\b"
     r"|\bwon'?t be (?:coming|calling|booking|staying|flying) (?:back|with you|again)\b"
-    r"|\bnot worth (?:it|staying|the hassle|my money) anymore\b")
+    r"|\bnot worth (?:it|staying|the hassle|my money) anymore\b"
+    r"|\b(?:i(?:'ll| will)|we(?:'ll| will))\s+(?:take|move)\s+(?:my|our)\s+(?:business|account)\s+(?:elsewhere|somewhere else)\b"
+    r"|\b(?:i(?:'ll| will)|we(?:'ll| will))\s+(?:go|take my business|move)\s+(?:elsewhere|somewhere else)\b"
+    r"|\b(?:i|we)\s+(?:will\s+)?(?:use|go with|choose)\s+(?:someone|somewhere|some other|another)\s+else\b"
+    r"|\b(?:you(?:'ve| have)\s+)?lost\s+me\b")
 WAVERING_RE = re.compile(
     r"\b(?:second thoughts|having doubts|losing (?:my )?(?:patience|faith|trust) in (?:you|your)|not sure (?:i'?ll|i will|if "
     r"i'?ll|whether i'?ll) (?:stay|keep|renew|book|come back)|thinking twice|last chance|one more chance|is this how you "

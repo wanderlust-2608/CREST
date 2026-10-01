@@ -8,8 +8,8 @@ from dataclasses import asdict, dataclass, field
 
 from .answer import (Artifacts, PackBuilder, WRITER_VERSION, finalize, llm_write, write_answer)
 from .definitions import BEHAVIOURS, EVENTS, INDUSTRIES
-from .query import (HELP_RE, OVERVIEW_RE, QUESTION_TYPES, TYPE_PATTERNS, QueryParser, QuerySpec, _norm, llm_normalize,
-                    llm_parse, parse_point_date, unsure)
+from .query import (GENERIC_EVENT_RE, HELP_RE, OVERVIEW_RE, QUESTION_TYPES, TYPE_PATTERNS, QueryParser, QuerySpec,
+                    _norm, llm_normalize, llm_parse, parse_point_date, unsure)
 
 SLOTS = ("event", "question_type", "behaviour", "factor_ref", "industry", "brand", "intent", "date_from", "date_to",
          "with_event", "threshold", "change", "tier", "plan", "segment", "tenure", "self_status", "call")
@@ -132,6 +132,19 @@ def propose_delta(prev: QuerySpec, text: str, parser: QueryParser) -> dict:
     ops = delta["ops"]
     qt = explicit_type(text)
     standalone = is_standalone(t, new, qt)
+    # Cross-event evidence questions should not inherit a previous event unless the new
+    # question explicitly names one. This prevents phrases such as "which factors were
+    # not supported as causal explanations?" from silently becoming an escalation/churn/etc. query.
+    if new.event is None and qt in ("causal_failure", "counterevidence"):
+        ops.append({"op": "remove", "slot": "event", "value": None})
+        if prev.compare:
+            ops.append({"op": "remove", "slot": "compare", "value": None})
+        if prev.behaviour and not new.behaviour:
+            ops.append({"op": "remove", "slot": "behaviour", "value": None})
+    elif new.event is None and GENERIC_EVENT_RE.search(t) and qt == "effect_of":
+        ops.append({"op": "remove", "slot": "event", "value": None})
+        if prev.compare:
+            ops.append({"op": "remove", "slot": "compare", "value": None})
     if new.event and new.event != prev.event:
         ops.append({"op": "set", "slot": "event", "value": new.event})
     if not new.compare and qt == "compare" and new.event and prev.event and new.event != prev.event:
@@ -525,6 +538,11 @@ class Engine:
                         delta = ld
                 except Exception:
                     pass
+            # Never let the optional LLM follow-up parser invent an event for an explicitly generic phrase.
+            if GENERIC_EVENT_RE.search(_norm(text)):
+                delta["ops"] = [op for op in delta["ops"] if not (op["slot"] == "event" and op["op"] == "set")]
+                if explicit_type(text) in ("causal_failure", "counterevidence") and prev.event:
+                    delta["ops"].append({"op": "remove", "slot": "event", "value": None})
             problems = validate_delta(delta, self.parser)
             if problems:
                 delta["clarify"] = "I could not apply that change (" + "; ".join(problems) + "). Could you rephrase?"

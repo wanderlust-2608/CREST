@@ -50,6 +50,8 @@ QUERY_META = {
     "overview": ("task1", "easy", "simple_retrieval", "monitoring"),
     "retention_risk": ("task1", "medium", "multi_hop", "root_cause"),
     "single_call": ("task1", "medium", "evidence_lookup", "root_cause"),
+    "causal_failure": ("task1", "hard", "causal_audit", "causal_guardrail"),
+    "counterevidence": ("task1", "hard", "counterevidence", "causal_guardrail"),
 }
 KNOWN_LIMITATIONS = [
     ("Kwa nini wateja wanaomba msimamizi?", {"behaviour": "answer", "event": "ESC", "question_type": "why"},
@@ -69,7 +71,7 @@ KNOWN_LIMITATIONS = [
      "outcome under a different agent action is not identifiable from the data"),
 ]
 META_FIELDS = ("task", "difficulty", "query_type", "use_case")
-CATEGORY_ORDER = ["how_often", "examples", "trend", "ranking", "product_improvement", "why", "compare", "effect_of",
+CATEGORY_ORDER = ["how_often", "examples", "trend", "ranking", "product_improvement", "why", "compare", "effect_of", "causal_failure", "counterevidence",
                   "what_to_change", "multi_hop", "conditional", "before_after", "threshold", "behaviour_profile", "overview",
                   "retention_risk", "single_call", "noisy_text", "multilingual", "true_premise", "false_presupposition",
                   "leading", "unanswerable", "out_of_scope", "unsupported_filter", "tiny_subgroup", "ambiguous",
@@ -265,6 +267,11 @@ def build_query_set(corpus, library: pd.DataFrame, settings, labels: pd.DataFram
                 "answer_with_support_notice", e, "why", {"brand": [small]})
         add("product_improvement", PRODUCT_Q[e], "answer_topics", e, "issues")
         add("ranking", RANK_Q[e], "answer_rank", e, "compare")
+    add("causal_failure", "Which apparent explanations are not supported by the causal checks?",
+        "answer_causal_failure", None, "causal_failure")
+    add("counterevidence", "Are there behaviours that occur frequently before an event but do not meaningfully distinguish event from non-event calls?",
+        "answer_counterevidence", None, "counterevidence")
+    add("ambiguous", "What tends to precede a complaint?", "clarify", extra={"unsupported": "complaint is not a labelled event"})
     add("ambiguous", "Why does this happen?", "clarify")
     add("ambiguous", "What about it?", "clarify")
     add("ambiguous", "Show me the numbers", "clarify")
