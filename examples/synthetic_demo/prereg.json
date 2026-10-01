@@ -1,0 +1,849 @@
+{
+  "claim_rules": [
+    "L3 requires every check: preregistered, actionable, support sufficient, BH q < bh_q, cluster-bootstrap CI excludes 0, required sensitivity analyses (claim.min_sensitivity) estimable with the same sign and none significantly opposite, dev and test agree in sign, negative controls clean, planted-effect test passed, gold presence F1 >= gold_f1_min, detector precision verified >= precision_min",
+    "L2: an estimate exists with at least borderline support but some L3 check fails (failed checks are listed)",
+    "L1: no usable estimate (not estimable or insufficient support) but calls can be counted",
+    "L0: nothing can be said reliably",
+    "exploratory slices and anything not pre-registered: at most L2"
+  ],
+  "created_utc": "2026-10-01 09:25:34",
+  "data_fingerprint": {
+    "n_calls": 4000,
+    "n_turns": 75857,
+    "raw_sha256": "511988981ff6509c3b551d8a31157e4e2b99e56caa6cfbf29e26074f9bf84c86",
+    "split_hash": "8219653c817eadddb4f0697eeda7b3cec1f8311396db974de47aad0a12ad85db",
+    "turn_uid_hash": "70776492f05cee7e37ab12a078d441e095509cb94964fc9de3dbaee72f9423da"
+  },
+  "definitions": {
+    "behaviours": {
+      "agent_transfer": {
+        "actionable": true,
+        "detector": [
+          "cue",
+          "cue_agent_transfer"
+        ],
+        "id": "agent_transfer",
+        "label": "the agent transfers the call to another team",
+        "negative_control": false,
+        "party": "Agent",
+        "short": "transfers",
+        "synonyms": [
+          "transfer",
+          "specialist",
+          "another department",
+          "routed"
+        ]
+      },
+      "apology": {
+        "actionable": true,
+        "detector": [
+          "cue",
+          "cue_apology"
+        ],
+        "id": "apology",
+        "label": "the agent apologises",
+        "negative_control": false,
+        "party": "Agent",
+        "short": "agent apologies",
+        "synonyms": [
+          "apolog",
+          "sorry"
+        ]
+      },
+      "competitor_mention": {
+        "actionable": false,
+        "detector": [
+          "cue",
+          "cue_competitor_mention"
+        ],
+        "id": "competitor_mention",
+        "label": "the customer mentions a competitor",
+        "negative_control": false,
+        "party": "Customer",
+        "short": "competitor mentions",
+        "synonyms": [
+          "competitor",
+          "another provider",
+          "other company"
+        ]
+      },
+      "confusion": {
+        "actionable": false,
+        "detector": [
+          "cue",
+          "cue_confusion"
+        ],
+        "id": "confusion",
+        "label": "the customer is confused or misunderstands",
+        "negative_control": false,
+        "party": "Customer",
+        "short": "customer confusion",
+        "synonyms": [
+          "confus",
+          "misunderstand",
+          "don't understand",
+          "clarif"
+        ]
+      },
+      "empathy": {
+        "actionable": true,
+        "detector": [
+          "cue",
+          "cue_empathy"
+        ],
+        "id": "empathy",
+        "label": "the agent expresses empathy",
+        "negative_control": false,
+        "party": "Agent",
+        "short": "empathy statements",
+        "synonyms": [
+          "empath",
+          "sympath",
+          "understanding tone"
+        ]
+      },
+      "hesitation": {
+        "actionable": false,
+        "detector": [
+          "min_count",
+          "n_filled_pauses",
+          2
+        ],
+        "id": "hesitation",
+        "label": "the customer hesitates (two or more filled pauses)",
+        "negative_control": false,
+        "party": "Customer",
+        "short": "customer hesitations",
+        "synonyms": [
+          "hesitat",
+          "filler",
+          "filled pause",
+          "um",
+          "uh"
+        ]
+      },
+      "hold_request": {
+        "actionable": true,
+        "detector": [
+          "cue",
+          "cue_hold_request"
+        ],
+        "id": "hold_request",
+        "label": "the agent puts the customer on hold or asks them to wait",
+        "negative_control": false,
+        "party": "Agent",
+        "short": "holds and wait requests",
+        "synonyms": [
+          "hold",
+          "on hold",
+          "wait",
+          "waiting",
+          "silence",
+          "silences",
+          "dead air"
+        ]
+      },
+      "hold_return": {
+        "actionable": true,
+        "detector": [
+          "cue",
+          "cue_hold_return"
+        ],
+        "id": "hold_return",
+        "label": "the agent thanks the customer for waiting",
+        "negative_control": false,
+        "party": "Agent",
+        "short": "returns from hold",
+        "synonyms": [
+          "thanks for waiting",
+          "return from hold",
+          "back from hold"
+        ]
+      },
+      "issue_persistence": {
+        "actionable": false,
+        "detector": [
+          "cue",
+          "cue_issue_persistence"
+        ],
+        "id": "issue_persistence",
+        "label": "the customer says the problem is still not fixed",
+        "negative_control": false,
+        "party": "Customer",
+        "short": "unresolved-issue complaints",
+        "synonyms": [
+          "still not",
+          "persist",
+          "unresolved",
+          "ongoing problem",
+          "not fixed"
+        ]
+      },
+      "nc_readback": {
+        "actionable": true,
+        "detector": [
+          "regex",
+          "\\b(?:just to confirm|to confirm|let me confirm|confirming|let me read (?:that|it) back|reading (?:that|it) back)\\b.{0,40}?(?:\\d|\\b(?:zero|one|two|three|four|five|six|seven|eight|nine|oh)\\b)"
+        ],
+        "id": "nc_readback",
+        "label": "the agent reads back an id or number to confirm it",
+        "negative_control": true,
+        "party": "Agent",
+        "short": "read-backs",
+        "synonyms": [
+          "read back",
+          "reads back",
+          "reading back",
+          "readback",
+          "read-back",
+          "repeating back",
+          "repeats back"
+        ]
+      },
+      "nc_thanks_info": {
+        "actionable": true,
+        "detector": [
+          "regex",
+          "\\bthank(?:s| you)(?: so much| very much)? for (?:that|the|this|those|these|all the) (?:information|info|details|detail)\\b|\\bthank(?:s| you) for confirming\\b"
+        ],
+        "id": "nc_thanks_info",
+        "label": "the agent thanks the customer for information",
+        "negative_control": true,
+        "party": "Agent",
+        "short": "thank-you-for-the-information remarks",
+        "synonyms": [
+          "thanking the customer for",
+          "thank the customer for",
+          "thanks the customer for",
+          "thanks for the info",
+          "thank you for the info",
+          "thanks for info",
+          "thanking for info"
+        ]
+      },
+      "negative_emotion": {
+        "actionable": false,
+        "detector": [
+          "cue",
+          "cue_negative_emotion"
+        ],
+        "id": "negative_emotion",
+        "label": "the customer expresses frustration or anger",
+        "negative_control": false,
+        "party": "Customer",
+        "short": "customer frustration",
+        "synonyms": [
+          "angry",
+          "anger",
+          "frustrat",
+          "upset",
+          "annoyed",
+          "negative emotion",
+          "emotion",
+          "irritat"
+        ]
+      },
+      "offer_solution": {
+        "actionable": true,
+        "detector": [
+          "cue",
+          "cue_offer_solution"
+        ],
+        "id": "offer_solution",
+        "label": "the agent offers a concrete solution",
+        "negative_control": false,
+        "party": "Agent",
+        "short": "solution offers",
+        "synonyms": [
+          "offer",
+          "solution",
+          "resolv",
+          "fix",
+          "remed"
+        ]
+      },
+      "refusal": {
+        "actionable": true,
+        "detector": [
+          "cue",
+          "cue_refusal"
+        ],
+        "id": "refusal",
+        "label": "the agent refuses a request or cites policy",
+        "negative_control": false,
+        "party": "Agent",
+        "short": "policy refusals",
+        "synonyms": [
+          "refus",
+          "policy",
+          "deny",
+          "denied",
+          "declin",
+          "no exceptions",
+          "rejection",
+          "reject"
+        ]
+      },
+      "repeat_contact": {
+        "actionable": false,
+        "detector": [
+          "cue",
+          "cue_repeat_contact"
+        ],
+        "id": "repeat_contact",
+        "label": "the customer says they already called or explained before",
+        "negative_control": false,
+        "party": "Customer",
+        "short": "repeat-contact mentions",
+        "synonyms": [
+          "repeat contact",
+          "called before",
+          "called again",
+          "already called",
+          "multiple calls",
+          "callback"
+        ]
+      },
+      "repeat_question": {
+        "actionable": false,
+        "detector": [
+          "column",
+          "is_repeat"
+        ],
+        "id": "repeat_question",
+        "label": "the customer repeats an earlier question or statement",
+        "negative_control": false,
+        "party": "Customer",
+        "short": "repeated questions",
+        "synonyms": [
+          "repeat",
+          "repeated question",
+          "repeated queries",
+          "asks again",
+          "repetition"
+        ]
+      }
+    },
+    "events": {
+      "CANCEL_DONE": {
+        "code": "CANCEL_DONE",
+        "confirmatory": false,
+        "excluded_behaviours": [],
+        "name": "cancellation completed",
+        "occurrence_filters": {},
+        "onset_rule": "the first agent turn confirming that an account, policy or subscription was cancelled",
+        "plural": "completed cancellations",
+        "subtypes": [
+          "done"
+        ],
+        "synonyms": []
+      },
+      "CHURN": {
+        "code": "CHURN",
+        "confirmatory": true,
+        "excluded_behaviours": [
+          "competitor_mention"
+        ],
+        "name": "churn threat",
+        "occurrence_filters": {},
+        "onset_rule": "the first customer turn stating an intent to cancel or close the account, switch provider or not renew",
+        "plural": "churn threats",
+        "subtypes": [
+          "cancel",
+          "switch",
+          "not_renew",
+          "other"
+        ],
+        "synonyms": [
+          "churn",
+          "cancel",
+          "leave",
+          "leaving",
+          "switch",
+          "quit",
+          "retention",
+          "attrition"
+        ]
+      },
+      "ESC": {
+        "code": "ESC",
+        "confirmatory": true,
+        "excluded_behaviours": [
+          "agent_transfer"
+        ],
+        "name": "escalation",
+        "occurrence_filters": {},
+        "onset_rule": "the first turn in which the customer asks for a supervisor, manager or someone more senior, or the agent starts a handoff to one, or a supervisor speaks",
+        "plural": "escalations",
+        "subtypes": [
+          "customer_request",
+          "agent_handoff"
+        ],
+        "synonyms": [
+          "escalat",
+          "supervisor",
+          "manager",
+          "speak to someone",
+          "higher up",
+          "someone senior"
+        ]
+      },
+      "HANDOFF": {
+        "code": "HANDOFF",
+        "confirmatory": false,
+        "excluded_behaviours": [],
+        "name": "completed supervisor handoff",
+        "occurrence_filters": {},
+        "onset_rule": "the first turn spoken by a supervisor",
+        "plural": "completed supervisor handoffs",
+        "subtypes": [
+          "supervisor"
+        ],
+        "synonyms": []
+      },
+      "REF": {
+        "code": "REF",
+        "confirmatory": true,
+        "excluded_behaviours": [],
+        "name": "refund episode",
+        "occurrence_filters": {
+          "offer_solution": "\\b(?:credit\\w*|refund\\w*|reimburs\\w*|compensat\\w*|money|cash|voucher\\w*)\\b"
+        },
+        "onset_rule": "the first turn in which either party raises a refund, compensation, money back, a credit back or a chargeback",
+        "plural": "refund episodes",
+        "subtypes": [
+          "customer_request",
+          "agent_offer"
+        ],
+        "synonyms": [
+          "refund",
+          "money back",
+          "reimburs",
+          "compensat",
+          "chargeback",
+          "credit back"
+        ]
+      },
+      "REF_DENIED": {
+        "code": "REF_DENIED",
+        "confirmatory": false,
+        "excluded_behaviours": [],
+        "name": "refund denied",
+        "occurrence_filters": {},
+        "onset_rule": "the first agent refusal within two turns of a customer refund request",
+        "plural": "denied refunds",
+        "subtypes": [
+          "denied"
+        ],
+        "synonyms": []
+      },
+      "REF_GRANTED": {
+        "code": "REF_GRANTED",
+        "confirmatory": false,
+        "excluded_behaviours": [],
+        "name": "refund granted",
+        "occurrence_filters": {},
+        "onset_rule": "the first agent turn confirming that a refund or credit has been or will be issued",
+        "plural": "granted refunds",
+        "subtypes": [
+          "granted"
+        ],
+        "synonyms": []
+      },
+      "RISK": {
+        "code": "RISK",
+        "confirmatory": false,
+        "excluded_behaviours": [],
+        "name": "retention risk",
+        "occurrence_filters": {},
+        "onset_rule": "the first customer turn with a churn threat, a competitor mentioned after the customer has complained or been refused, or wavering loyalty (second thoughts, losing patience, 'is this how you treat loyal customers')",
+        "plural": "retention risks",
+        "subtypes": [
+          "explicit",
+          "competitor",
+          "wavering"
+        ],
+        "synonyms": []
+      }
+    },
+    "max_category_for_level": {
+      "L0": "none",
+      "L1": "none",
+      "L2": "correlational",
+      "L3": "conditional_causal"
+    },
+    "money_re": "\\b(?:credit\\w*|refund\\w*|reimburs\\w*|compensat\\w*|money|cash|voucher\\w*)\\b"
+  },
+  "definitions_sha256": "b94ebfc6deaf496ff100196c296144dcd1f29b879fa5ac3d3f540241ce980994",
+  "estimand": {
+    "call_end": "the end of the call is part of the outcome (total effect), not censoring",
+    "comparator": "B does not happen at turn k (it may happen later: natural course afterwards)",
+    "contrast": "average effect on the treated (ATT), risk difference in points",
+    "covariates": "only opening and turn-past columns of turns before k (availability registry; future-invariance test)",
+    "label_error": "DSL correction with the blind held-out gold set when it exists (outcome and risk-set membership)",
+    "outcome": "the event starts after turn k, before the call ends (primary); within the next 6 turns (S1)",
+    "population": "held-out calls (dev + test); landmark rows (call, turn k) with k >= opening_turns, the event not yet started, no other confirmatory event and no supervisor handoff started before k (S5 relaxes this), behaviour B not yet used, turn k spoken by B's party, both parties already spoken",
+    "time_zero": "turn k",
+    "treatment": "B first happens at turn k",
+    "truncation": "primary analysis treats every transcript as complete; S3 drops calls flagged as possibly truncated",
+    "unit_and_clusters": "row = (call, k); clusters = template groups (cross-fitting folds and standard errors)"
+  },
+  "family": {
+    "CHURN": [
+      "offer_solution",
+      "refusal",
+      "empathy",
+      "repeat_question",
+      "hold_request",
+      "hesitation",
+      "negative_emotion",
+      "confusion"
+    ],
+    "ESC": [
+      "offer_solution",
+      "refusal",
+      "negative_emotion",
+      "empathy",
+      "hold_request",
+      "repeat_question",
+      "confusion",
+      "hesitation",
+      "competitor_mention"
+    ],
+    "REF": [
+      "offer_solution",
+      "repeat_question",
+      "hold_request",
+      "refusal",
+      "empathy",
+      "confusion",
+      "competitor_mention",
+      "hesitation",
+      "negative_emotion"
+    ]
+  },
+  "family_rule": "The written, mechanical selection rule for the confirmatory family (per event): estimable on train; the behaviour starts in >= min_treated_call_share of risk-set calls; >= min_treated_rows_pilot treated rows; >= kept_borderline of treated rows kept after trimming; not measured below precision_min (when a precision check exists); ranked by |attributable events| (ties by name); at most max_behaviours_per_event.",
+  "gold_sample_sha256": "f61f7a3f4c7112ead5b0f8179951a1009931a5ae1df37db545ffab5bc10fdf89",
+  "labeller": {
+    "kind": "lexicon",
+    "labels_sha256": "6baa5c1b41425e21f9650de855819cff2afe7e45daa2410c775fd00bfecd7991"
+  },
+  "learner": {
+    "kind": "logistic_ridge",
+    "out": {
+      "alpha": 1000.0
+    },
+    "prop": {
+      "C": 0.03
+    }
+  },
+  "learner_choice": {
+    "grid_losses": {
+      "hgb.out": [
+        [
+          "{\"max_leaf_nodes\": 7, \"min_samples_leaf\": 100}",
+          0.8392977715692981
+        ],
+        [
+          "{\"max_leaf_nodes\": 15, \"min_samples_leaf\": 40}",
+          0.8664720383171647
+        ],
+        [
+          "{\"max_leaf_nodes\": 31, \"min_samples_leaf\": 20}",
+          0.9074523255584162
+        ]
+      ],
+      "hgb.prop": [
+        [
+          "{\"max_leaf_nodes\": 7, \"min_samples_leaf\": 100}",
+          0.912401048882083
+        ],
+        [
+          "{\"max_leaf_nodes\": 15, \"min_samples_leaf\": 40}",
+          0.9221537774554877
+        ],
+        [
+          "{\"max_leaf_nodes\": 31, \"min_samples_leaf\": 20}",
+          0.9459648871814659
+        ]
+      ],
+      "logistic_ridge.out": [
+        [
+          "{\"alpha\": 1.0}",
+          0.8442234773014561
+        ],
+        [
+          "{\"alpha\": 10.0}",
+          0.8414547931482498
+        ],
+        [
+          "{\"alpha\": 100.0}",
+          0.8369903108569182
+        ],
+        [
+          "{\"alpha\": 1000.0}",
+          0.8327743445991682
+        ]
+      ],
+      "logistic_ridge.prop": [
+        [
+          "{\"C\": 0.003}",
+          0.9119791246074165
+        ],
+        [
+          "{\"C\": 0.01}",
+          0.9089324409825094
+        ],
+        [
+          "{\"C\": 0.03}",
+          0.9084089573996816
+        ],
+        [
+          "{\"C\": 0.1}",
+          0.9086356972615245
+        ],
+        [
+          "{\"C\": 0.3}",
+          0.9089249700839387
+        ],
+        [
+          "{\"C\": 1.0}",
+          0.9091045841301079
+        ]
+      ]
+    },
+    "learner": {
+      "kind": "logistic_ridge",
+      "out": {
+        "alpha": 1000.0
+      },
+      "prop": {
+        "C": 0.03
+      }
+    },
+    "other_learner": {
+      "kind": "hgb",
+      "out": {
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 100
+      },
+      "prop": {
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 100
+      }
+    },
+    "pairs": [
+      "CHURN:empathy",
+      "ESC:empathy"
+    ],
+    "total_loss": {
+      "hgb": 1.751698820451381,
+      "logistic_ridge": 1.7411833019988499
+    },
+    "tuned": {
+      "hgb": {
+        "kind": "hgb",
+        "out": {
+          "max_leaf_nodes": 7,
+          "min_samples_leaf": 100
+        },
+        "prop": {
+          "max_leaf_nodes": 7,
+          "min_samples_leaf": 100
+        }
+      },
+      "logistic_ridge": {
+        "kind": "logistic_ridge",
+        "out": {
+          "alpha": 1000.0
+        },
+        "prop": {
+          "C": 0.03
+        }
+      }
+    },
+    "tuning_rows": [
+      6940,
+      6940
+    ]
+  },
+  "negative_controls": [
+    "nc_thanks_info",
+    "nc_readback"
+  ],
+  "other_learner": {
+    "kind": "hgb",
+    "out": {
+      "max_leaf_nodes": 7,
+      "min_samples_leaf": 100
+    },
+    "prop": {
+      "max_leaf_nodes": 7,
+      "min_samples_leaf": 100
+    }
+  },
+  "pilot_summary": {
+    "estimable": 32,
+    "n_pairs": 46
+  },
+  "planted_effect_test": {
+    "bias": -0.00740729654774689,
+    "bias_mcse": 0.002798550712771862,
+    "checks": {
+      "bias_small": true,
+      "coverage_consistent_with_95": true,
+      "false_alarms_consistent_with_5": true
+    },
+    "coverage": 0.94,
+    "coverage_ci": [
+      0.8752303146877748,
+      0.9722142547333433
+    ],
+    "false_alarm_ci": [
+      0.02778574526665662,
+      0.12476968531222507
+    ],
+    "false_alarm_rate": 0.06,
+    "median_se": 0.02903157595923366,
+    "n_sims": 200,
+    "null_mean_estimate": -0.002316221362534047,
+    "pairs": [
+      "CHURN:empathy",
+      "ESC:empathy"
+    ],
+    "passed": true,
+    "planted_effect": 0.08,
+    "skipped_pairs": [],
+    "standardized_bias": -0.25514620901559965
+  },
+  "precision_checks": {
+    "empathy": {
+      "n_judged": 20,
+      "precision": 1.0
+    },
+    "hold_request": {
+      "n_judged": 20,
+      "precision": 1.0
+    },
+    "nc_readback": {
+      "n_judged": 20,
+      "precision": 1.0
+    },
+    "nc_thanks_info": {
+      "n_judged": 20,
+      "precision": 1.0
+    },
+    "offer_solution": {
+      "n_judged": 20,
+      "precision": 1.0
+    },
+    "refusal": {
+      "n_judged": 20,
+      "precision": 1.0
+    }
+  },
+  "prereg_version": 2,
+  "sensitivity_analyses": {
+    "S1": "6-turn horizon",
+    "S2": "without name-labelled calls (inferred roles)",
+    "S3": "without possibly truncated calls",
+    "S4": "with unflagged metadata as covariates",
+    "S5": "including moments after another event (earlier events as covariates)",
+    "S6": "the other learner",
+    "S7": "single-call template groups only",
+    "S8": "onset shifted -1 and +1 turn"
+  },
+  "settings": {
+    "claim": {
+      "gold_f1_min": 0.7,
+      "min_sensitivity": [
+        "S2",
+        "S3",
+        "S5",
+        "S8"
+      ],
+      "onset_within1_min": 0.9,
+      "precision_min": 0.8
+    },
+    "estimator": {
+      "alpha": 0.05,
+      "bh_q": 0.05,
+      "bootstrap_draws": 2000,
+      "learner": "auto",
+      "max_behaviours_per_event": 12,
+      "min_treated_call_share": 0.02,
+      "min_treated_rows_pilot": 50,
+      "n_folds": 5,
+      "outcome_clip": true,
+      "planted_effect": 0.08,
+      "planted_pairs": 2,
+      "planted_sims": 100,
+      "planted_subsample": 0.2,
+      "propensity_clip": 0.001,
+      "seed": 7,
+      "trim_upper": 0.9,
+      "tune_max_rows": 60000
+    },
+    "evidence": {
+      "dropout_share": 0.3,
+      "forecast_max_negatives": 300000,
+      "forecaster_C": 1.0,
+      "max_spans_per_factor": 2,
+      "random_baseline_draws": 20,
+      "spans_per_slice": 10,
+      "tfidf_features": 20000,
+      "window_turns": 3
+    },
+    "gold": {
+      "n_double": 40,
+      "n_random": 150,
+      "n_stress": 50,
+      "seed": 20260929
+    },
+    "index": {
+      "bm25_b": 0.75,
+      "bm25_epsilon": 0.25,
+      "bm25_k1": 1.5,
+      "candidates": 200,
+      "embed_backend": "auto",
+      "lsa_dims": 128,
+      "mmr_lambda": 0.7,
+      "rrf_k": 60,
+      "st_model": "sentence-transformers/all-MiniLM-L6-v2",
+      "stride": 3,
+      "top_k": 10,
+      "window": 5
+    },
+    "labeller": {
+      "semantic_churn": true,
+      "semantic_encoder": "auto",
+      "semantic_threshold": 0.9
+    },
+    "landmark": {
+      "embed_dims": 32,
+      "horizon": 6,
+      "last_k": 3,
+      "max_brands": 30
+    },
+    "llm": {
+      "backend": "none",
+      "dev_sample_size": 1500,
+      "effort": "medium",
+      "max_tokens": 16000,
+      "model": "claude-opus-5-5"
+    },
+    "opening_turns": 4,
+    "seed": 20260929,
+    "support": {
+      "events_borderline": 10,
+      "events_sufficient": 20,
+      "halfwidth_borderline": 0.2,
+      "halfwidth_sufficient": 0.1,
+      "kept_borderline": 0.5,
+      "kept_sufficient": 0.8,
+      "smd_borderline": 0.2,
+      "smd_sufficient": 0.1
+    }
+  },
+  "settings_sha256": "10aa7b1432c1481b1a7c6a34fb1d57e7a80abbba89924433d5ecb31f9c7a82f7"
+}

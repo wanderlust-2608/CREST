@@ -1,0 +1,28 @@
+# --- data: copyrighted, hackathon-only — never commit ---
+data/
+cleaned_data/
+final_transcripts*.json
+*.parquet
+# pipeline outputs contain transcript excerpts (quotes, gold packets, indexes)
+crest_out/
+demo_out/
+llm_cache/
+*.npy
+# executed notebooks show transcript samples in their outputs; conversation-state files from `crest ask --session`
+*.executed.ipynb
+s.json
+*session*.json
+
+# --- python / jupyter ---
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.venv/
+venv/
+.env
+
+# --- os / editors ---
+.DS_Store
+.idea/
+.vscode/

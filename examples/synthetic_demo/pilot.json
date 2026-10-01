@@ -1,0 +1,227 @@
+{
+  "learner": {
+    "kind": "logistic_ridge",
+    "prop": {
+      "C": 0.03
+    },
+    "out": {
+      "alpha": 1000.0
+    }
+  },
+  "other_learner": {
+    "kind": "hgb",
+    "prop": {
+      "max_leaf_nodes": 7,
+      "min_samples_leaf": 100
+    },
+    "out": {
+      "max_leaf_nodes": 7,
+      "min_samples_leaf": 100
+    }
+  },
+  "learner_choice": {
+    "learner": {
+      "kind": "logistic_ridge",
+      "prop": {
+        "C": 0.03
+      },
+      "out": {
+        "alpha": 1000.0
+      }
+    },
+    "other_learner": {
+      "kind": "hgb",
+      "prop": {
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 100
+      },
+      "out": {
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 100
+      }
+    },
+    "tuned": {
+      "logistic_ridge": {
+        "kind": "logistic_ridge",
+        "prop": {
+          "C": 0.03
+        },
+        "out": {
+          "alpha": 1000.0
+        }
+      },
+      "hgb": {
+        "kind": "hgb",
+        "prop": {
+          "max_leaf_nodes": 7,
+          "min_samples_leaf": 100
+        },
+        "out": {
+          "max_leaf_nodes": 7,
+          "min_samples_leaf": 100
+        }
+      }
+    },
+    "grid_losses": {
+      "logistic_ridge.prop": [
+        [
+          "{\"C\": 0.003}",
+          0.9119791246074165
+        ],
+        [
+          "{\"C\": 0.01}",
+          0.9089324409825094
+        ],
+        [
+          "{\"C\": 0.03}",
+          0.9084089573996816
+        ],
+        [
+          "{\"C\": 0.1}",
+          0.9086356972615245
+        ],
+        [
+          "{\"C\": 0.3}",
+          0.9089249700839387
+        ],
+        [
+          "{\"C\": 1.0}",
+          0.9091045841301079
+        ]
+      ],
+      "logistic_ridge.out": [
+        [
+          "{\"alpha\": 1.0}",
+          0.8442234773014561
+        ],
+        [
+          "{\"alpha\": 10.0}",
+          0.8414547931482498
+        ],
+        [
+          "{\"alpha\": 100.0}",
+          0.8369903108569182
+        ],
+        [
+          "{\"alpha\": 1000.0}",
+          0.8327743445991682
+        ]
+      ],
+      "hgb.prop": [
+        [
+          "{\"max_leaf_nodes\": 7, \"min_samples_leaf\": 100}",
+          0.912401048882083
+        ],
+        [
+          "{\"max_leaf_nodes\": 15, \"min_samples_leaf\": 40}",
+          0.9221537774554877
+        ],
+        [
+          "{\"max_leaf_nodes\": 31, \"min_samples_leaf\": 20}",
+          0.9459648871814659
+        ]
+      ],
+      "hgb.out": [
+        [
+          "{\"max_leaf_nodes\": 7, \"min_samples_leaf\": 100}",
+          0.8392977715692981
+        ],
+        [
+          "{\"max_leaf_nodes\": 15, \"min_samples_leaf\": 40}",
+          0.8664720383171647
+        ],
+        [
+          "{\"max_leaf_nodes\": 31, \"min_samples_leaf\": 20}",
+          0.9074523255584162
+        ]
+      ]
+    },
+    "total_loss": {
+      "logistic_ridge": 1.7411833019988499,
+      "hgb": 1.751698820451381
+    },
+    "pairs": [
+      "CHURN:empathy",
+      "ESC:empathy"
+    ],
+    "tuning_rows": [
+      6940,
+      6940
+    ]
+  },
+  "planted": {
+    "n_sims": 200,
+    "planted_effect": 0.08,
+    "pairs": [
+      "CHURN:empathy",
+      "ESC:empathy"
+    ],
+    "bias": -0.00740729654774689,
+    "bias_mcse": 0.002798550712771862,
+    "median_se": 0.02903157595923366,
+    "standardized_bias": -0.25514620901559965,
+    "null_mean_estimate": -0.002316221362534047,
+    "coverage": 0.94,
+    "coverage_ci": [
+      0.8752303146877748,
+      0.9722142547333433
+    ],
+    "false_alarm_rate": 0.06,
+    "false_alarm_ci": [
+      0.02778574526665662,
+      0.12476968531222507
+    ],
+    "passed": true,
+    "checks": {
+      "bias_small": true,
+      "coverage_consistent_with_95": true,
+      "false_alarms_consistent_with_5": true
+    },
+    "skipped_pairs": []
+  },
+  "family": {
+    "ESC": [
+      "offer_solution",
+      "refusal",
+      "negative_emotion",
+      "empathy",
+      "hold_request",
+      "repeat_question",
+      "confusion",
+      "hesitation",
+      "competitor_mention"
+    ],
+    "REF": [
+      "offer_solution",
+      "repeat_question",
+      "hold_request",
+      "refusal",
+      "empathy",
+      "confusion",
+      "competitor_mention",
+      "hesitation",
+      "negative_emotion"
+    ],
+    "CHURN": [
+      "offer_solution",
+      "refusal",
+      "empathy",
+      "repeat_question",
+      "hold_request",
+      "hesitation",
+      "negative_emotion",
+      "confusion"
+    ]
+  },
+  "family_rule": "The written, mechanical selection rule for the confirmatory family (per event): estimable on train; the behaviour starts in >= min_treated_call_share of risk-set calls; >= min_treated_rows_pilot treated rows; >= kept_borderline of treated rows kept after trimming; not measured below precision_min (when a precision check exists); ranked by |attributable events| (ties by name); at most max_behaviours_per_event.",
+  "sensitivity": {
+    "S1": "6-turn horizon",
+    "S2": "without name-labelled calls (inferred roles)",
+    "S3": "without possibly truncated calls",
+    "S4": "with unflagged metadata as covariates",
+    "S5": "including moments after another event (earlier events as covariates)",
+    "S6": "the other learner",
+    "S7": "single-call template groups only",
+    "S8": "onset shifted -1 and +1 turn"
+  }
+}

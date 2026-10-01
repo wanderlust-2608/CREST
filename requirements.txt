@@ -1,0 +1,16 @@
+# Python >= 3.10. Tested: Python 3.11 with numpy 2.4 / pandas 3.0 / scikit-learn 1.9, and Python 3.10 with the
+# minimum versions below (numpy 1.24, pandas 2.0, scipy 1.10, scikit-learn 1.2).
+pandas>=2.0
+numpy>=1.24
+scipy>=1.10
+scikit-learn>=1.2    # >= 1.2 for the Newton-Cholesky logistic solver (older versions fall back to lbfgs)
+pyarrow>=14          # parquet outputs (the notebook falls back to CSV if missing)
+# threadpoolctl and joblib come with scikit-learn. Near-duplicate / template grouping (MinHash-LSH) is implemented in
+# the cleaning notebook itself, so the locked split does not depend on a package version.
+
+# notebooks + headless execution / tests
+jupyterlab>=4
+ipykernel>=6
+nbformat>=5.9
+nbconvert>=7
+pytest>=7

@@ -1,0 +1,233 @@
+{
+  "prereg_sha256": "61c6938f907358ec5fa216ade288af3d856b6ea2fd5ba26ad0a6968909a72cab",
+  "prereg_ok": true,
+  "library_version": "lib-cb69b22807efb763",
+  "corrected_rates": {
+    "ESC": {
+      "rate": 0.4810255174076242,
+      "ci": [
+        0.47258874279184865,
+        0.4894622920233998
+      ],
+      "labeller_rate": 0.48533007334963324,
+      "n_calls": 818
+    },
+    "REF": {
+      "rate": 0.3019559902200489,
+      "ci": [
+        0.3019559902200489,
+        0.3019559902200489
+      ],
+      "labeller_rate": 0.3019559902200489,
+      "n_calls": 818
+    },
+    "CHURN": {
+      "rate": 0.1332518337408313,
+      "ci": [
+        0.1332518337408313,
+        0.1332518337408313
+      ],
+      "labeller_rate": 0.1332518337408313,
+      "n_calls": 818
+    }
+  },
+  "opening_terms": {
+    "ESC": [],
+    "REF": [
+      {
+        "term": "refund",
+        "z": 12.527144956198676,
+        "calls_with_term": 386,
+        "share": 1.0
+      },
+      {
+        "term": "unacceptable",
+        "z": 6.4506321224758665,
+        "calls_with_term": 200,
+        "share": 0.5181347150259067
+      },
+      {
+        "term": "completely unacceptable",
+        "z": 4.477671905610348,
+        "calls_with_term": 100,
+        "share": 0.25906735751295334
+      },
+      {
+        "term": "hurry",
+        "z": 4.477671905610348,
+        "calls_with_term": 100,
+        "share": 0.25906735751295334
+      },
+      {
+        "term": "completely",
+        "z": 4.477671905610348,
+        "calls_with_term": 100,
+        "share": 0.25906735751295334
+      },
+      {
+        "term": "pretty annoyed",
+        "z": 0.9124396153048112,
+        "calls_with_term": 158,
+        "share": 0.40932642487046633
+      },
+      {
+        "term": "annoyed",
+        "z": 0.9124396153048112,
+        "calls_with_term": 158,
+        "share": 0.40932642487046633
+      },
+      {
+        "term": "pretty",
+        "z": 0.9124396153048112,
+        "calls_with_term": 158,
+        "share": 0.40932642487046633
+      }
+    ],
+    "CHURN": []
+  },
+  "gold_metrics": {
+    "n_gold_calls": 200,
+    "by_event": {
+      "ESC": {
+        "precision": 0.9905660377358491,
+        "recall": 1.0,
+        "f1": 0.9952606635071091,
+        "f1_ci": [
+          0.9852216748768474,
+          1.0
+        ],
+        "onset_exact": 0.9714285714285714,
+        "onset_within1": 1.0,
+        "n_gold_events": 105,
+        "n_labeller_events": 106,
+        "kappa_presence": 1.0,
+        "n_double_coded": 40
+      },
+      "REF": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "f1_ci": [
+          1.0,
+          1.0
+        ],
+        "onset_exact": 0.9848484848484849,
+        "onset_within1": 1.0,
+        "n_gold_events": 66,
+        "n_labeller_events": 66,
+        "kappa_presence": 1.0,
+        "n_double_coded": 40
+      },
+      "CHURN": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "f1_ci": [
+          1.0,
+          1.0
+        ],
+        "onset_exact": 1.0,
+        "onset_within1": 1.0,
+        "n_gold_events": 35,
+        "n_labeller_events": 35,
+        "kappa_presence": 1.0,
+        "n_double_coded": 40
+      }
+    },
+    "file_sha256": "49ed6c25a7bd64547c13625a954cf4b17e0072bd656e3a6c4ac76e562875e443"
+  },
+  "planted_effect_test": {
+    "bias": -0.00740729654774689,
+    "bias_mcse": 0.002798550712771862,
+    "checks": {
+      "bias_small": true,
+      "coverage_consistent_with_95": true,
+      "false_alarms_consistent_with_5": true
+    },
+    "coverage": 0.94,
+    "coverage_ci": [
+      0.8752303146877748,
+      0.9722142547333433
+    ],
+    "false_alarm_ci": [
+      0.02778574526665662,
+      0.12476968531222507
+    ],
+    "false_alarm_rate": 0.06,
+    "median_se": 0.02903157595923366,
+    "n_sims": 200,
+    "null_mean_estimate": -0.002316221362534047,
+    "pairs": [
+      "CHURN:empathy",
+      "ESC:empathy"
+    ],
+    "passed": true,
+    "planted_effect": 0.08,
+    "skipped_pairs": [],
+    "standardized_bias": -0.25514620901559965
+  },
+  "levels": {
+    "CHURN": {
+      "L1": 2,
+      "L2": 5,
+      "L3": 1,
+      "NC": 2
+    },
+    "ESC": {
+      "L1": 1,
+      "L2": 5,
+      "L3": 3,
+      "NC": 2
+    },
+    "REF": {
+      "L1": 2,
+      "L2": 6,
+      "L3": 1,
+      "NC": 2
+    }
+  },
+  "negative_controls": [
+    {
+      "event": "ESC",
+      "behaviour": "nc_readback",
+      "att": 0.03018192258197196,
+      "ci_low": -0.028050715530790016,
+      "ci_high": 0.08841456069473394
+    },
+    {
+      "event": "ESC",
+      "behaviour": "nc_thanks_info",
+      "att": 0.006847005511672824,
+      "ci_low": -0.05183451173363753,
+      "ci_high": 0.06552852275698318
+    },
+    {
+      "event": "REF",
+      "behaviour": "nc_readback",
+      "att": -0.022660574629855736,
+      "ci_low": -0.08107238895592357,
+      "ci_high": 0.03575123969621209
+    },
+    {
+      "event": "REF",
+      "behaviour": "nc_thanks_info",
+      "att": -0.01658897360993599,
+      "ci_low": -0.07075335381631251,
+      "ci_high": 0.03757540659644052
+    },
+    {
+      "event": "CHURN",
+      "behaviour": "nc_readback",
+      "att": -0.01313251249535413,
+      "ci_low": -0.057534863788596055,
+      "ci_high": 0.03126983879788779
+    },
+    {
+      "event": "CHURN",
+      "behaviour": "nc_thanks_info",
+      "att": 0.008502969513505754,
+      "ci_low": -0.03312966427739744,
+      "ci_high": 0.05013560330440894
+    }
+  ]
+}

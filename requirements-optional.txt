@@ -1,0 +1,7 @@
+# Optional extras -- the pipeline runs without any of them.
+anthropic>=1.9            # LLM backend (off by default; check the hackathon data rules before enabling it)
+sentence-transformers>=3  # dense retrieval embeddings (otherwise an LSA embedder is used)
+# reference implementations used only by the cross-check tests
+doubleml>=0.11
+rank_bm25>=0.2.2
+ppi-python>=0.2

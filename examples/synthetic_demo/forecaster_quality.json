@@ -1,0 +1,93 @@
+{
+  "forecaster_quality": {
+    "ESC": {
+      "event": "ESC",
+      "n_rows": 9302,
+      "n_events": 397,
+      "auc_next_turn": 0.9341461862339246,
+      "auc_next_turn_ci": [
+        0.9224262909000139,
+        0.9449223555780681
+      ],
+      "auc_within_3": 0.8514101505908854,
+      "auc_within_3_ci": [
+        0.8380084346389285,
+        0.8656726706751254
+      ],
+      "brier": 0.0281681284206185,
+      "mean_predicted": 0.046298171436080844,
+      "observed_rate": 0.042678993764781764,
+      "calibration_slope": 1.0463951180432822,
+      "calibration_intercept": -0.04350609922191965,
+      "ece": 0.0043185193526515345
+    },
+    "REF": {
+      "event": "REF",
+      "n_rows": 8965,
+      "n_events": 176,
+      "auc_next_turn": 0.8705154428572907,
+      "auc_next_turn_ci": [
+        0.8559473798508239,
+        0.8854776292635191
+      ],
+      "auc_within_3": 0.7598738332883217,
+      "auc_within_3_ci": [
+        0.7428982295995096,
+        0.7744341070754543
+      ],
+      "brier": 0.018186664933079376,
+      "mean_predicted": 0.019316191965593234,
+      "observed_rate": 0.0196319018404908,
+      "calibration_slope": 1.0861346212105336,
+      "calibration_intercept": 0.27179395124144196,
+      "ece": 0.003660021395761427
+    },
+    "CHURN": {
+      "event": "CHURN",
+      "n_rows": 10800,
+      "n_events": 109,
+      "auc_next_turn": 0.8912452298469347,
+      "auc_next_turn_ci": [
+        0.8707991156413661,
+        0.9098915616519981
+      ],
+      "auc_within_3": 0.7920509008719073,
+      "auc_within_3_ci": [
+        0.7686722847555523,
+        0.8134376331965494
+      ],
+      "brier": 0.0095530906224263,
+      "mean_predicted": 0.011308024245623813,
+      "observed_rate": 0.010092592592592592,
+      "calibration_slope": 1.057098797299777,
+      "calibration_intercept": 0.06930500106365013,
+      "ece": 0.0025605512638503585
+    }
+  },
+  "comprehensiveness": {
+    "ESC": {
+      "n_calls": 255,
+      "comprehensiveness_minus_random": 0.056254173740616954,
+      "ci": [
+        0.03760936148427376,
+        0.0761374189830505
+      ]
+    },
+    "REF": {
+      "n_calls": 137,
+      "comprehensiveness_minus_random": -0.011101783063264018,
+      "ci": [
+        -0.024085433878971756,
+        0.001123720319297345
+      ]
+    },
+    "CHURN": {
+      "n_calls": 97,
+      "comprehensiveness_minus_random": 0.009060966263565711,
+      "ci": [
+        0.0013028180158161566,
+        0.01685272697469413
+      ]
+    }
+  }
+}

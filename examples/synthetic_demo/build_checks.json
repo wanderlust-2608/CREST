@@ -1,0 +1,57 @@
+{
+  "future_invariance": {
+    "rows_checked": 1000,
+    "failures": 0,
+    "passed": true
+  },
+  "cue_blindness": {
+    "turns_checked": 20000,
+    "cue_mismatches": 0,
+    "by_cue": {},
+    "filled_pause_mismatches": 0,
+    "passed": true,
+    "past_only_by_construction": [
+      "repeat_question (is_repeat)"
+    ]
+  },
+  "regex_blindness": {
+    "behaviours": [
+      "nc_thanks_info",
+      "nc_readback"
+    ],
+    "passed": true
+  },
+  "families_phi_gt_0_7": {},
+  "labeller": {
+    "kind": "lexicon",
+    "churn_detector": {
+      "semantic": "tfidf-weak-supervision",
+      "threshold": 0.9,
+      "candidates": 1025,
+      "turns_added": 0,
+      "rule_turns": 588,
+      "churn_turns": 588,
+      "risk_turns": 903,
+      "disengage_turns": 63
+    }
+  },
+  "event_counts": {
+    "ESC": {
+      "calls_with_event": 1865,
+      "in_opening": 0
+    },
+    "REF": {
+      "calls_with_event": 1224,
+      "in_opening": 386
+    },
+    "CHURN": {
+      "calls_with_event": 588,
+      "in_opening": 0
+    }
+  },
+  "landmark_rows": 59857,
+  "n_features": 117,
+  "leakage_flagged_columns": [],
+  "opening_domain_filled_from_brand": 0,
+  "excluded_calls": []
+}

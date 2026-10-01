@@ -1,0 +1,98 @@
+{
+  "n_dev": 65,
+  "n_test": 33,
+  "test_sha256": "da63665f9f159dc2a80d7ad9a9fe510f4a98ffc936c0094d056eed0ad20f5f4b",
+  "distribution": {
+    "task": {
+      "task1": 85,
+      "task2": 13
+    },
+    "difficulty": {
+      "easy": 12,
+      "hard": 33,
+      "medium": 53
+    },
+    "query_type": {
+      "ambiguous": 3,
+      "cannot_answer": 13,
+      "evidence_lookup": 3,
+      "follow_up": 13,
+      "impact_evaluation": 3,
+      "known_limitation": 4,
+      "multi_hop": 23,
+      "premise_check": 9,
+      "robustness": 10,
+      "simple_retrieval": 17
+    },
+    "use_case": {
+      "evidence_lookup": 2,
+      "follow_up": 13,
+      "guardrail": 22,
+      "hypothesis_test": 9,
+      "impact_evaluation": 3,
+      "monitoring": 7,
+      "process_improvement": 2,
+      "product_improvement": 3,
+      "robustness": 10,
+      "root_cause": 18,
+      "segment_comparison": 5,
+      "stress_test": 4
+    },
+    "category": {
+      "ambiguous": 3,
+      "before_after": 3,
+      "behaviour_profile": 2,
+      "compare": 2,
+      "conditional": 3,
+      "effect_of": 3,
+      "examples": 2,
+      "false_presupposition": 5,
+      "how_often": 3,
+      "known_limitation": 4,
+      "leading": 1,
+      "multi_hop": 3,
+      "multilingual": 6,
+      "noisy_text": 4,
+      "out_of_scope": 7,
+      "overview": 2,
+      "product_improvement": 3,
+      "ranking": 3,
+      "retention_risk": 2,
+      "session": 13,
+      "single_call": 3,
+      "threshold": 3,
+      "tiny_subgroup": 1,
+      "trend": 2,
+      "true_premise": 3,
+      "unanswerable": 4,
+      "unsupported_filter": 1,
+      "what_to_change": 2,
+      "why": 5
+    },
+    "event_of_each_question": {
+      "CHURN": 27,
+      "ESC": 47,
+      "REF": 37,
+      "RISK": 2,
+      "none": 13
+    }
+  },
+  "n_questions_total": 126,
+  "diversity": {
+    "n_questions": 126,
+    "distinct_1": 0.3215158924205379,
+    "distinct_2": 0.6228323699421965,
+    "mean_pairwise_rouge_l": 0.07066400359915491,
+    "max_pairwise_rouge_l": 1.0,
+    "distinct_expected_slots_share": 0.7063492063492064,
+    "evenness": {
+      "category": 0.9482639861377204,
+      "task": 0.564669579752567,
+      "difficulty": 0.8702789087583994,
+      "query_type": 0.9045892094215173,
+      "use_case": 0.8893446763307581
+    },
+    "evenness_event": 0.8436958589044341
+  },
+  "note": "commit queries_test.jsonl and this hash before any tuning; run the test queries once"
+}

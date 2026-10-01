@@ -1,0 +1,1596 @@
+{
+  "query_set": {
+    "n_queries": 98,
+    "distribution": {
+      "task": {
+        "task1": 85,
+        "task2": 13
+      },
+      "difficulty": {
+        "easy": 12,
+        "hard": 33,
+        "medium": 53
+      },
+      "query_type": {
+        "ambiguous": 3,
+        "cannot_answer": 13,
+        "evidence_lookup": 3,
+        "follow_up": 13,
+        "impact_evaluation": 3,
+        "known_limitation": 4,
+        "multi_hop": 23,
+        "premise_check": 9,
+        "robustness": 10,
+        "simple_retrieval": 17
+      },
+      "use_case": {
+        "evidence_lookup": 2,
+        "follow_up": 13,
+        "guardrail": 22,
+        "hypothesis_test": 9,
+        "impact_evaluation": 3,
+        "monitoring": 7,
+        "process_improvement": 2,
+        "product_improvement": 3,
+        "robustness": 10,
+        "root_cause": 18,
+        "segment_comparison": 5,
+        "stress_test": 4
+      },
+      "category": {
+        "ambiguous": 3,
+        "before_after": 3,
+        "behaviour_profile": 2,
+        "compare": 2,
+        "conditional": 3,
+        "effect_of": 3,
+        "examples": 2,
+        "false_presupposition": 5,
+        "how_often": 3,
+        "known_limitation": 4,
+        "leading": 1,
+        "multi_hop": 3,
+        "multilingual": 6,
+        "noisy_text": 4,
+        "out_of_scope": 7,
+        "overview": 2,
+        "product_improvement": 3,
+        "ranking": 3,
+        "retention_risk": 2,
+        "session": 13,
+        "single_call": 3,
+        "threshold": 3,
+        "tiny_subgroup": 1,
+        "trend": 2,
+        "true_premise": 3,
+        "unanswerable": 4,
+        "unsupported_filter": 1,
+        "what_to_change": 2,
+        "why": 5
+      },
+      "event_of_each_question": {
+        "CHURN": 27,
+        "ESC": 47,
+        "REF": 37,
+        "RISK": 2,
+        "none": 13
+      }
+    },
+    "diversity": {
+      "n_questions": 126,
+      "distinct_1": 0.3215158924205379,
+      "distinct_2": 0.6228323699421965,
+      "mean_pairwise_rouge_l": 0.07066400359915491,
+      "max_pairwise_rouge_l": 1.0,
+      "distinct_expected_slots_share": 0.7063492063492064,
+      "evenness": {
+        "category": 0.9482639861377204,
+        "task": 0.564669579752567,
+        "difficulty": 0.8702789087583994,
+        "query_type": 0.9045892094215173,
+        "use_case": 0.8893446763307581
+      },
+      "evenness_event": 0.8436958589044341
+    }
+  },
+  "query_judge": {
+    "status": "not run (optional; `python -m crest evaluate --llm`)"
+  },
+  "dev": {
+    "n_single": 53,
+    "n_sessions": 9,
+    "expected_behaviour_met": {
+      "mean": 1.0,
+      "ci": [
+        1.0,
+        1.0
+      ],
+      "n": 53
+    },
+    "by_category": {
+      "ambiguous": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "before_after": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "behaviour_profile": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "compare": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "conditional": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "effect_of": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "examples": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "false_presupposition": {
+        "share_ok": 1.0,
+        "n": 3
+      },
+      "how_often": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "leading": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "multi_hop": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "multilingual": {
+        "share_ok": 1.0,
+        "n": 4
+      },
+      "noisy_text": {
+        "share_ok": 1.0,
+        "n": 3
+      },
+      "out_of_scope": {
+        "share_ok": 1.0,
+        "n": 5
+      },
+      "overview": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "product_improvement": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "ranking": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "retention_risk": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "single_call": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "threshold": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "tiny_subgroup": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "trend": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "true_premise": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "unanswerable": {
+        "share_ok": 1.0,
+        "n": 3
+      },
+      "unsupported_filter": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "what_to_change": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "why": {
+        "share_ok": 1.0,
+        "n": 3
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "share_ok": 1.0,
+        "n": 7
+      },
+      "hard": {
+        "share_ok": 1.0,
+        "n": 18
+      },
+      "medium": {
+        "share_ok": 1.0,
+        "n": 28
+      }
+    },
+    "by_query_type": {
+      "ambiguous": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "cannot_answer": {
+        "share_ok": 1.0,
+        "n": 10
+      },
+      "evidence_lookup": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "impact_evaluation": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "multi_hop": {
+        "share_ok": 1.0,
+        "n": 14
+      },
+      "premise_check": {
+        "share_ok": 1.0,
+        "n": 6
+      },
+      "robustness": {
+        "share_ok": 1.0,
+        "n": 7
+      },
+      "simple_retrieval": {
+        "share_ok": 1.0,
+        "n": 10
+      }
+    },
+    "slot_accuracy": {
+      "event": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ],
+        "n": 47
+      },
+      "question_type": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ],
+        "n": 35
+      },
+      "filters": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ],
+        "n": 7
+      },
+      "behaviour": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ],
+        "n": 10
+      }
+    },
+    "sentences": 880,
+    "sentences_dropped_by_gates": 0,
+    "dropped_by_gate": {
+      "numbers": 0,
+      "causal": 0,
+      "evidence": 0
+    },
+    "degraded_answers": 0,
+    "wording_violations_after_gates": 0,
+    "quotes": 247,
+    "followup_carry_over": {
+      "mean": 1.0,
+      "ci": [
+        1.0,
+        1.0
+      ],
+      "n": 28
+    },
+    "followup_route_accuracy": {
+      "mean": 1.0,
+      "ci": [
+        1.0,
+        1.0
+      ],
+      "n": 19
+    },
+    "seconds_per_answer": {
+      "median": 0.047,
+      "p95": 0.08679999999999999
+    },
+    "known_limitations": {
+      "n": 3,
+      "handled_as_ideal": 0,
+      "items": [
+        {
+          "id": "q082",
+          "question": "Kwa nini wateja wanaomba msimamizi?",
+          "ideal": "answer",
+          "met": false,
+          "system_did": "asked to clarify",
+          "why": "languages outside the built-in word lists (here Swahili) are read only when an LLM is configured; without one the system asks the user to rephrase"
+        },
+        {
+          "id": "q083",
+          "question": "Does empathy reduce escalations only when the customer is already frustrated?",
+          "ideal": "estimate_modification",
+          "met": false,
+          "system_did": "answered a 'effect_of' question about ESC; notices: effect modification",
+          "why": "effects are estimated over all comparable moments together; an effect within calls where something else already happened (effect modification) is not estimated, so the overall estimate is given with a notice"
+        },
+        {
+          "id": "q085",
+          "question": "If agents had offered a solution earlier in this call, would the customer still have escalated?",
+          "ideal": "answer_counterfactual",
+          "met": false,
+          "system_did": "answered a 'effect_of' question about ESC; notices: single-call counterfactual",
+          "why": "counterfactuals about one specific call are not estimated: estimates describe calls in general, and one call's outcome under a different agent action is not identifiable from the data"
+        }
+      ]
+    },
+    "B0": {
+      "available": true,
+      "premise_corrected": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "n": 6
+      },
+      "unsupported_flagged": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "n": 6
+      },
+      "abs_error_of_rate_from_search_hits": {
+        "mean": 0.18612499999999998,
+        "ci": [
+          0.10599999999999998,
+          0.26625
+        ],
+        "n": 2
+      },
+      "note": "B0 answers from the top-10 windows; rates from hit counts; no premise or attribute checks"
+    },
+    "B2": {
+      "carry_over": {
+        "mean": 0.3684210526315789,
+        "ci": [
+          0.15789473684210525,
+          0.5789473684210527
+        ],
+        "n": 19
+      }
+    }
+  },
+  "test": {
+    "n_single": 28,
+    "n_sessions": 4,
+    "expected_behaviour_met": {
+      "mean": 1.0,
+      "ci": [
+        1.0,
+        1.0
+      ],
+      "n": 28
+    },
+    "by_category": {
+      "ambiguous": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "before_after": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "behaviour_profile": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "compare": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "conditional": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "effect_of": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "examples": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "false_presupposition": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "how_often": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "multi_hop": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "multilingual": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "noisy_text": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "out_of_scope": {
+        "share_ok": 1.0,
+        "n": 2
+      },
+      "overview": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "product_improvement": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "ranking": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "retention_risk": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "single_call": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "threshold": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "trend": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "true_premise": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "unanswerable": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "what_to_change": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "why": {
+        "share_ok": 1.0,
+        "n": 2
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "share_ok": 1.0,
+        "n": 5
+      },
+      "hard": {
+        "share_ok": 1.0,
+        "n": 8
+      },
+      "medium": {
+        "share_ok": 1.0,
+        "n": 15
+      }
+    },
+    "by_query_type": {
+      "ambiguous": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "cannot_answer": {
+        "share_ok": 1.0,
+        "n": 3
+      },
+      "evidence_lookup": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "impact_evaluation": {
+        "share_ok": 1.0,
+        "n": 1
+      },
+      "multi_hop": {
+        "share_ok": 1.0,
+        "n": 9
+      },
+      "premise_check": {
+        "share_ok": 1.0,
+        "n": 3
+      },
+      "robustness": {
+        "share_ok": 1.0,
+        "n": 3
+      },
+      "simple_retrieval": {
+        "share_ok": 1.0,
+        "n": 7
+      }
+    },
+    "slot_accuracy": {
+      "event": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ],
+        "n": 24
+      },
+      "question_type": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ],
+        "n": 21
+      },
+      "filters": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ],
+        "n": 5
+      },
+      "behaviour": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ],
+        "n": 5
+      }
+    },
+    "sentences": 462,
+    "sentences_dropped_by_gates": 0,
+    "dropped_by_gate": {
+      "numbers": 0,
+      "causal": 0,
+      "evidence": 0
+    },
+    "degraded_answers": 0,
+    "wording_violations_after_gates": 0,
+    "quotes": 125,
+    "followup_carry_over": {
+      "mean": 1.0,
+      "ci": [
+        1.0,
+        1.0
+      ],
+      "n": 12
+    },
+    "followup_route_accuracy": {
+      "mean": 1.0,
+      "ci": [
+        1.0,
+        1.0
+      ],
+      "n": 9
+    },
+    "seconds_per_answer": {
+      "median": 0.047,
+      "p95": 0.08924999999999997
+    },
+    "known_limitations": {
+      "n": 1,
+      "handled_as_ideal": 0,
+      "items": [
+        {
+          "id": "q084",
+          "question": "Why did escalations go up in hotel calls but not in airline calls?",
+          "ideal": "answer_contrast",
+          "met": false,
+          "system_did": "answered a 'why' question about ESC with filters {\"industry\": [\"hospitality\"]}",
+          "why": "a contrast between two slices inside a why-question is answered for the first slice only; the second slice is read as an exclusion"
+        }
+      ]
+    },
+    "B0": {
+      "available": true,
+      "premise_corrected": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "n": 3
+      },
+      "unsupported_flagged": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "n": 3
+      },
+      "abs_error_of_rate_from_search_hits": {
+        "mean": 0.046999999999999986,
+        "ci": [
+          0.046999999999999986,
+          0.046999999999999986
+        ],
+        "n": 1
+      },
+      "note": "B0 answers from the top-10 windows; rates from hit counts; no premise or attribute checks"
+    },
+    "B2": {
+      "carry_over": {
+        "mean": 0.125,
+        "ci": [
+          0.0,
+          0.375
+        ],
+        "n": 8
+      }
+    }
+  },
+  "library": {
+    "prereg_sha256": "61c6938f907358ec5fa216ade288af3d856b6ea2fd5ba26ad0a6968909a72cab",
+    "prereg_ok": true,
+    "library_version": "lib-cb69b22807efb763",
+    "corrected_rates": {
+      "ESC": {
+        "rate": 0.4810255174076242,
+        "ci": [
+          0.47258874279184865,
+          0.4894622920233998
+        ],
+        "labeller_rate": 0.48533007334963324,
+        "n_calls": 818
+      },
+      "REF": {
+        "rate": 0.3019559902200489,
+        "ci": [
+          0.3019559902200489,
+          0.3019559902200489
+        ],
+        "labeller_rate": 0.3019559902200489,
+        "n_calls": 818
+      },
+      "CHURN": {
+        "rate": 0.1332518337408313,
+        "ci": [
+          0.1332518337408313,
+          0.1332518337408313
+        ],
+        "labeller_rate": 0.1332518337408313,
+        "n_calls": 818
+      }
+    },
+    "opening_terms": {
+      "ESC": [],
+      "REF": [
+        {
+          "term": "refund",
+          "z": 12.527144956198676,
+          "calls_with_term": 386,
+          "share": 1.0
+        },
+        {
+          "term": "unacceptable",
+          "z": 6.4506321224758665,
+          "calls_with_term": 200,
+          "share": 0.5181347150259067
+        },
+        {
+          "term": "completely unacceptable",
+          "z": 4.477671905610348,
+          "calls_with_term": 100,
+          "share": 0.25906735751295334
+        },
+        {
+          "term": "hurry",
+          "z": 4.477671905610348,
+          "calls_with_term": 100,
+          "share": 0.25906735751295334
+        },
+        {
+          "term": "completely",
+          "z": 4.477671905610348,
+          "calls_with_term": 100,
+          "share": 0.25906735751295334
+        },
+        {
+          "term": "pretty annoyed",
+          "z": 0.9124396153048112,
+          "calls_with_term": 158,
+          "share": 0.40932642487046633
+        },
+        {
+          "term": "annoyed",
+          "z": 0.9124396153048112,
+          "calls_with_term": 158,
+          "share": 0.40932642487046633
+        },
+        {
+          "term": "pretty",
+          "z": 0.9124396153048112,
+          "calls_with_term": 158,
+          "share": 0.40932642487046633
+        }
+      ],
+      "CHURN": []
+    },
+    "gold_metrics": {
+      "n_gold_calls": 200,
+      "by_event": {
+        "ESC": {
+          "precision": 0.9905660377358491,
+          "recall": 1.0,
+          "f1": 0.9952606635071091,
+          "f1_ci": [
+            0.9852216748768474,
+            1.0
+          ],
+          "onset_exact": 0.9714285714285714,
+          "onset_within1": 1.0,
+          "n_gold_events": 105,
+          "n_labeller_events": 106,
+          "kappa_presence": 1.0,
+          "n_double_coded": 40
+        },
+        "REF": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "f1_ci": [
+            1.0,
+            1.0
+          ],
+          "onset_exact": 0.9848484848484849,
+          "onset_within1": 1.0,
+          "n_gold_events": 66,
+          "n_labeller_events": 66,
+          "kappa_presence": 1.0,
+          "n_double_coded": 40
+        },
+        "CHURN": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "f1_ci": [
+            1.0,
+            1.0
+          ],
+          "onset_exact": 1.0,
+          "onset_within1": 1.0,
+          "n_gold_events": 35,
+          "n_labeller_events": 35,
+          "kappa_presence": 1.0,
+          "n_double_coded": 40
+        }
+      },
+      "file_sha256": "49ed6c25a7bd64547c13625a954cf4b17e0072bd656e3a6c4ac76e562875e443"
+    },
+    "planted_effect_test": {
+      "bias": -0.00740729654774689,
+      "bias_mcse": 0.002798550712771862,
+      "checks": {
+        "bias_small": true,
+        "coverage_consistent_with_95": true,
+        "false_alarms_consistent_with_5": true
+      },
+      "coverage": 0.94,
+      "coverage_ci": [
+        0.8752303146877748,
+        0.9722142547333433
+      ],
+      "false_alarm_ci": [
+        0.02778574526665662,
+        0.12476968531222507
+      ],
+      "false_alarm_rate": 0.06,
+      "median_se": 0.02903157595923366,
+      "n_sims": 200,
+      "null_mean_estimate": -0.002316221362534047,
+      "pairs": [
+        "CHURN:empathy",
+        "ESC:empathy"
+      ],
+      "passed": true,
+      "planted_effect": 0.08,
+      "skipped_pairs": [],
+      "standardized_bias": -0.25514620901559965
+    },
+    "levels": {
+      "CHURN": {
+        "L1": 2,
+        "L2": 5,
+        "L3": 1,
+        "NC": 2
+      },
+      "ESC": {
+        "L1": 1,
+        "L2": 5,
+        "L3": 3,
+        "NC": 2
+      },
+      "REF": {
+        "L1": 2,
+        "L2": 6,
+        "L3": 1,
+        "NC": 2
+      }
+    },
+    "negative_controls": [
+      {
+        "event": "ESC",
+        "behaviour": "nc_readback",
+        "att": 0.03018192258197196,
+        "ci_low": -0.028050715530790016,
+        "ci_high": 0.08841456069473394
+      },
+      {
+        "event": "ESC",
+        "behaviour": "nc_thanks_info",
+        "att": 0.006847005511672824,
+        "ci_low": -0.05183451173363753,
+        "ci_high": 0.06552852275698318
+      },
+      {
+        "event": "REF",
+        "behaviour": "nc_readback",
+        "att": -0.022660574629855736,
+        "ci_low": -0.08107238895592357,
+        "ci_high": 0.03575123969621209
+      },
+      {
+        "event": "REF",
+        "behaviour": "nc_thanks_info",
+        "att": -0.01658897360993599,
+        "ci_low": -0.07075335381631251,
+        "ci_high": 0.03757540659644052
+      },
+      {
+        "event": "CHURN",
+        "behaviour": "nc_readback",
+        "att": -0.01313251249535413,
+        "ci_low": -0.057534863788596055,
+        "ci_high": 0.03126983879788779
+      },
+      {
+        "event": "CHURN",
+        "behaviour": "nc_thanks_info",
+        "att": 0.008502969513505754,
+        "ci_low": -0.03312966427739744,
+        "ci_high": 0.05013560330440894
+      }
+    ]
+  },
+  "build_checks": {
+    "future_invariance": {
+      "rows_checked": 1000,
+      "failures": 0,
+      "passed": true
+    },
+    "cue_blindness": {
+      "turns_checked": 20000,
+      "cue_mismatches": 0,
+      "by_cue": {},
+      "filled_pause_mismatches": 0,
+      "passed": true,
+      "past_only_by_construction": [
+        "repeat_question (is_repeat)"
+      ]
+    },
+    "regex_blindness": {
+      "behaviours": [
+        "nc_thanks_info",
+        "nc_readback"
+      ],
+      "passed": true
+    },
+    "families_phi_gt_0_7": {},
+    "labeller": {
+      "kind": "lexicon",
+      "churn_detector": {
+        "semantic": "tfidf-weak-supervision",
+        "threshold": 0.9,
+        "candidates": 1025,
+        "turns_added": 0,
+        "rule_turns": 588,
+        "churn_turns": 588,
+        "risk_turns": 903,
+        "disengage_turns": 63
+      }
+    },
+    "event_counts": {
+      "ESC": {
+        "calls_with_event": 1865,
+        "in_opening": 0
+      },
+      "REF": {
+        "calls_with_event": 1224,
+        "in_opening": 386
+      },
+      "CHURN": {
+        "calls_with_event": 588,
+        "in_opening": 0
+      }
+    },
+    "landmark_rows": 59857,
+    "n_features": 117,
+    "leakage_flagged_columns": [],
+    "opening_domain_filled_from_brand": 0,
+    "excluded_calls": []
+  },
+  "evidence": {
+    "forecaster_quality": {
+      "ESC": {
+        "event": "ESC",
+        "n_rows": 9302,
+        "n_events": 397,
+        "auc_next_turn": 0.9341461862339246,
+        "auc_next_turn_ci": [
+          0.9224262909000139,
+          0.9449223555780681
+        ],
+        "auc_within_3": 0.8514101505908854,
+        "auc_within_3_ci": [
+          0.8380084346389285,
+          0.8656726706751254
+        ],
+        "brier": 0.0281681284206185,
+        "mean_predicted": 0.046298171436080844,
+        "observed_rate": 0.042678993764781764,
+        "calibration_slope": 1.0463951180432822,
+        "calibration_intercept": -0.04350609922191965,
+        "ece": 0.0043185193526515345
+      },
+      "REF": {
+        "event": "REF",
+        "n_rows": 8965,
+        "n_events": 176,
+        "auc_next_turn": 0.8705154428572907,
+        "auc_next_turn_ci": [
+          0.8559473798508239,
+          0.8854776292635191
+        ],
+        "auc_within_3": 0.7598738332883217,
+        "auc_within_3_ci": [
+          0.7428982295995096,
+          0.7744341070754543
+        ],
+        "brier": 0.018186664933079376,
+        "mean_predicted": 0.019316191965593234,
+        "observed_rate": 0.0196319018404908,
+        "calibration_slope": 1.0861346212105336,
+        "calibration_intercept": 0.27179395124144196,
+        "ece": 0.003660021395761427
+      },
+      "CHURN": {
+        "event": "CHURN",
+        "n_rows": 10800,
+        "n_events": 109,
+        "auc_next_turn": 0.8912452298469347,
+        "auc_next_turn_ci": [
+          0.8707991156413661,
+          0.9098915616519981
+        ],
+        "auc_within_3": 0.7920509008719073,
+        "auc_within_3_ci": [
+          0.7686722847555523,
+          0.8134376331965494
+        ],
+        "brier": 0.0095530906224263,
+        "mean_predicted": 0.011308024245623813,
+        "observed_rate": 0.010092592592592592,
+        "calibration_slope": 1.057098797299777,
+        "calibration_intercept": 0.06930500106365013,
+        "ece": 0.0025605512638503585
+      }
+    },
+    "comprehensiveness": {
+      "ESC": {
+        "n_calls": 255,
+        "comprehensiveness_minus_random": 0.056254173740616954,
+        "ci": [
+          0.03760936148427376,
+          0.0761374189830505
+        ]
+      },
+      "REF": {
+        "n_calls": 137,
+        "comprehensiveness_minus_random": -0.011101783063264018,
+        "ci": [
+          -0.024085433878971756,
+          0.001123720319297345
+        ]
+      },
+      "CHURN": {
+        "n_calls": 97,
+        "comprehensiveness_minus_random": 0.009060966263565711,
+        "ci": [
+          0.0013028180158161566,
+          0.01685272697469413
+        ]
+      }
+    }
+  },
+  "faithfulness": [
+    {
+      "factor_id": "F1",
+      "event": "ESC",
+      "behaviour": "offer_solution",
+      "n_candidates": 161,
+      "calls_with_behaviour": 581,
+      "calls_without_event": 420,
+      "n_scored": 60,
+      "median_percentile": 39.23076923076923,
+      "share_sign_agrees": 0.9666666666666668,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F2",
+      "event": "ESC",
+      "behaviour": "refusal",
+      "n_candidates": 363,
+      "calls_with_behaviour": 514,
+      "calls_without_event": 151,
+      "n_scored": 60,
+      "median_percentile": 80.0,
+      "share_sign_agrees": 1.0,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F3",
+      "event": "ESC",
+      "behaviour": "hold_request",
+      "n_candidates": 230,
+      "calls_with_behaviour": 422,
+      "calls_without_event": 192,
+      "n_scored": 60,
+      "median_percentile": 71.42857142857143,
+      "share_sign_agrees": 0.95,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F4",
+      "event": "ESC",
+      "behaviour": "repeat_question",
+      "n_candidates": 169,
+      "calls_with_behaviour": 304,
+      "calls_without_event": 135,
+      "n_scored": 60,
+      "median_percentile": 60.0,
+      "share_sign_agrees": 0.3166666666666666,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F5",
+      "event": "ESC",
+      "behaviour": "confusion",
+      "n_candidates": 79,
+      "calls_with_behaviour": 137,
+      "calls_without_event": 58,
+      "n_scored": 55,
+      "median_percentile": 50.0,
+      "share_sign_agrees": 0.2727272727272727,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F6",
+      "event": "ESC",
+      "behaviour": "empathy",
+      "n_candidates": 307,
+      "calls_with_behaviour": 583,
+      "calls_without_event": 276,
+      "n_scored": 60,
+      "median_percentile": 47.72727272727273,
+      "share_sign_agrees": 0.85,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F7",
+      "event": "ESC",
+      "behaviour": "competitor_mention",
+      "n_candidates": 90,
+      "calls_with_behaviour": 160,
+      "calls_without_event": 70,
+      "n_scored": 60,
+      "median_percentile": 33.33333333333333,
+      "share_sign_agrees": 0.6833333333333333,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F8",
+      "event": "ESC",
+      "behaviour": "hesitation",
+      "n_candidates": 19,
+      "calls_with_behaviour": 31,
+      "calls_without_event": 12,
+      "n_scored": 19,
+      "median_percentile": 87.5,
+      "share_sign_agrees": 0.5789473684210527,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F9",
+      "event": "ESC",
+      "behaviour": "negative_emotion",
+      "n_candidates": 68,
+      "calls_with_behaviour": 79,
+      "calls_without_event": 11,
+      "n_scored": 53,
+      "median_percentile": 71.42857142857143,
+      "share_sign_agrees": 0.3962264150943396,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F10",
+      "event": "REF",
+      "behaviour": "offer_solution",
+      "n_candidates": 71,
+      "calls_with_behaviour": 636,
+      "calls_without_event": 565,
+      "n_scored": 55,
+      "median_percentile": 37.5,
+      "share_sign_agrees": 0.7818181818181819,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F11",
+      "event": "REF",
+      "behaviour": "empathy",
+      "n_candidates": 127,
+      "calls_with_behaviour": 494,
+      "calls_without_event": 367,
+      "n_scored": 60,
+      "median_percentile": 60.0,
+      "share_sign_agrees": 0.9166666666666666,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F12",
+      "event": "REF",
+      "behaviour": "repeat_question",
+      "n_candidates": 63,
+      "calls_with_behaviour": 228,
+      "calls_without_event": 165,
+      "n_scored": 56,
+      "median_percentile": 28.57142857142857,
+      "share_sign_agrees": 0.875,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F13",
+      "event": "REF",
+      "behaviour": "hold_request",
+      "n_candidates": 87,
+      "calls_with_behaviour": 463,
+      "calls_without_event": 376,
+      "n_scored": 59,
+      "median_percentile": 66.66666666666666,
+      "share_sign_agrees": 0.9322033898305084,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F14",
+      "event": "REF",
+      "behaviour": "refusal",
+      "n_candidates": 110,
+      "calls_with_behaviour": 421,
+      "calls_without_event": 311,
+      "n_scored": 60,
+      "median_percentile": 75.0,
+      "share_sign_agrees": 1.0,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F15",
+      "event": "REF",
+      "behaviour": "confusion",
+      "n_candidates": 29,
+      "calls_with_behaviour": 111,
+      "calls_without_event": 82,
+      "n_scored": 29,
+      "median_percentile": 60.0,
+      "share_sign_agrees": 0.5517241379310345,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F16",
+      "event": "REF",
+      "behaviour": "competitor_mention",
+      "n_candidates": 33,
+      "calls_with_behaviour": 137,
+      "calls_without_event": 104,
+      "n_scored": 33,
+      "median_percentile": 8.333333333333332,
+      "share_sign_agrees": 1.0,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F17",
+      "event": "REF",
+      "behaviour": "negative_emotion",
+      "n_candidates": 19,
+      "calls_with_behaviour": 79,
+      "calls_without_event": 60,
+      "n_scored": 19,
+      "median_percentile": 44.44444444444444,
+      "share_sign_agrees": 0.8421052631578947,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F18",
+      "event": "REF",
+      "behaviour": "hesitation",
+      "n_candidates": 7,
+      "calls_with_behaviour": 30,
+      "calls_without_event": 23,
+      "n_scored": 7,
+      "median_percentile": 50.0,
+      "share_sign_agrees": 0.8571428571428571,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F19",
+      "event": "CHURN",
+      "behaviour": "offer_solution",
+      "n_candidates": 41,
+      "calls_with_behaviour": 742,
+      "calls_without_event": 701,
+      "n_scored": 41,
+      "median_percentile": 33.33333333333333,
+      "share_sign_agrees": 0.926829268292683,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F20",
+      "event": "CHURN",
+      "behaviour": "refusal",
+      "n_candidates": 79,
+      "calls_with_behaviour": 493,
+      "calls_without_event": 414,
+      "n_scored": 60,
+      "median_percentile": 78.88888888888889,
+      "share_sign_agrees": 0.9833333333333332,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F21",
+      "event": "CHURN",
+      "behaviour": "repeat_question",
+      "n_candidates": 34,
+      "calls_with_behaviour": 278,
+      "calls_without_event": 244,
+      "n_scored": 34,
+      "median_percentile": 13.392857142857142,
+      "share_sign_agrees": 0.1176470588235294,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F22",
+      "event": "CHURN",
+      "behaviour": "hold_request",
+      "n_candidates": 52,
+      "calls_with_behaviour": 541,
+      "calls_without_event": 489,
+      "n_scored": 50,
+      "median_percentile": 66.66666666666666,
+      "share_sign_agrees": 0.98,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F23",
+      "event": "CHURN",
+      "behaviour": "empathy",
+      "n_candidates": 72,
+      "calls_with_behaviour": 551,
+      "calls_without_event": 479,
+      "n_scored": 60,
+      "median_percentile": 50.0,
+      "share_sign_agrees": 0.9666666666666668,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F24",
+      "event": "CHURN",
+      "behaviour": "confusion",
+      "n_candidates": 17,
+      "calls_with_behaviour": 135,
+      "calls_without_event": 118,
+      "n_scored": 17,
+      "median_percentile": 20.0,
+      "share_sign_agrees": 0.2352941176470588,
+      "faithfulness_passed": false
+    },
+    {
+      "factor_id": "F25",
+      "event": "CHURN",
+      "behaviour": "negative_emotion",
+      "n_candidates": 9,
+      "calls_with_behaviour": 88,
+      "calls_without_event": 79,
+      "n_scored": 9,
+      "median_percentile": 70.0,
+      "share_sign_agrees": 0.1111111111111111,
+      "faithfulness_passed": true
+    },
+    {
+      "factor_id": "F26",
+      "event": "CHURN",
+      "behaviour": "hesitation",
+      "n_candidates": 5,
+      "calls_with_behaviour": 41,
+      "calls_without_event": 36,
+      "n_scored": 5,
+      "median_percentile": 88.88888888888889,
+      "share_sign_agrees": 0.2,
+      "faithfulness_passed": true
+    }
+  ],
+  "causal_validity": {
+    "n": 12,
+    "coverage": {
+      "mean": 1.0,
+      "ci": [
+        1.0,
+        1.0
+      ],
+      "n": 12
+    },
+    "mean_abs_error": {
+      "mean": 0.015220969021595762,
+      "ci": [
+        0.01053117792716487,
+        0.020567547758607117
+      ],
+      "n": 12
+    },
+    "mean_abs_error_B3": {
+      "mean": 0.053714189947341805,
+      "ci": [
+        0.031898805788245124,
+        0.08122613740192695
+      ],
+      "n": 12
+    },
+    "paired_error_B3_minus_system": {
+      "diff": 0.03849322092574604,
+      "ci": [
+        0.017052568551272393,
+        0.0657287881176333
+      ],
+      "p_one_sided": 0.0005
+    },
+    "l3_sign_correct": 1.0,
+    "l3_count": 5,
+    "false_l3": 0,
+    "table": [
+      {
+        "factor_id": "F1",
+        "event": "ESC",
+        "behaviour": "offer_solution",
+        "level": "L3",
+        "truth": -0.28876373626373625,
+        "estimate": -0.31482596047719474,
+        "ci_low": -0.378017963333884,
+        "ci_high": -0.2516339576205055,
+        "covered": true,
+        "naive_B3": -0.36627229554365226,
+        "abs_error": 0.026062224213458496,
+        "abs_error_B3": 0.07750855927991601
+      },
+      {
+        "factor_id": "F2",
+        "event": "ESC",
+        "behaviour": "refusal",
+        "level": "L3",
+        "truth": 0.3089241293532338,
+        "estimate": 0.3216391440352501,
+        "ci_low": 0.2662536630848168,
+        "ci_high": 0.37702462498568345,
+        "covered": true,
+        "naive_B3": 0.46871818513609564,
+        "abs_error": 0.012715014682016301,
+        "abs_error_B3": 0.15979405578286182
+      },
+      {
+        "factor_id": "F3",
+        "event": "ESC",
+        "behaviour": "hold_request",
+        "level": "L3",
+        "truth": 0.06150914634146341,
+        "estimate": 0.0857323630405316,
+        "ci_low": 0.026474848907579993,
+        "ci_high": 0.14498987717348322,
+        "covered": true,
+        "naive_B3": 0.17310138238239392,
+        "abs_error": 0.02422321669906819,
+        "abs_error_B3": 0.11159223604093052
+      },
+      {
+        "factor_id": "F10",
+        "event": "REF",
+        "behaviour": "offer_solution",
+        "level": "L3",
+        "truth": -0.12667582417582418,
+        "estimate": -0.15941011330219595,
+        "ci_low": -0.21958919952698114,
+        "ci_high": -0.09923102707741077,
+        "covered": true,
+        "naive_B3": -0.16053205588381467,
+        "abs_error": 0.032734289126371774,
+        "abs_error_B3": 0.033856231707990486
+      },
+      {
+        "factor_id": "F13",
+        "event": "REF",
+        "behaviour": "hold_request",
+        "level": "L2",
+        "truth": 0.011166158536585365,
+        "estimate": 0.027993168780856104,
+        "ci_low": -0.024795132799240404,
+        "ci_high": 0.08078147036095261,
+        "covered": true,
+        "naive_B3": 0.06805585929856467,
+        "abs_error": 0.01682701024427074,
+        "abs_error_B3": 0.0568897007619793
+      },
+      {
+        "factor_id": "F14",
+        "event": "REF",
+        "behaviour": "refusal",
+        "level": "L2",
+        "truth": 0.03109452736318408,
+        "estimate": 0.02220122598603543,
+        "ci_low": -0.029833889199234066,
+        "ci_high": 0.07423634117130493,
+        "covered": true,
+        "naive_B3": 0.10627124992796633,
+        "abs_error": 0.008893301377148652,
+        "abs_error_B3": 0.07517672256478225
+      },
+      {
+        "factor_id": "F19",
+        "event": "CHURN",
+        "behaviour": "offer_solution",
+        "level": "L3",
+        "truth": -0.08692307692307692,
+        "estimate": -0.07705505444631136,
+        "ci_low": -0.11649351378111933,
+        "ci_high": -0.037616595111503386,
+        "covered": true,
+        "naive_B3": -0.07633911314815839,
+        "abs_error": 0.009868022476765562,
+        "abs_error_B3": 0.010583963774918534
+      },
+      {
+        "factor_id": "F20",
+        "event": "CHURN",
+        "behaviour": "refusal",
+        "level": "L2",
+        "truth": 0.04157338308457711,
+        "estimate": 0.041041237531568894,
+        "ci_low": 0.0018585377529505356,
+        "ci_high": 0.08022393731018726,
+        "covered": true,
+        "naive_B3": 0.08770097389500375,
+        "abs_error": 0.0005321455530082134,
+        "abs_error_B3": 0.046127590810426645
+      },
+      {
+        "factor_id": "F22",
+        "event": "CHURN",
+        "behaviour": "hold_request",
+        "level": "L2",
+        "truth": 0.009679878048780488,
+        "estimate": 0.028537333300707134,
+        "ci_low": -0.014074074477350085,
+        "ci_high": 0.07114874107876436,
+        "covered": true,
+        "naive_B3": 0.04451881352225509,
+        "abs_error": 0.01885745525192665,
+        "abs_error_B3": 0.0348389354734746
+      },
+      {
+        "factor_id": "F184",
+        "event": "ESC",
+        "behaviour": "nc_thanks_info",
+        "level": "NC",
+        "truth": 0.0,
+        "estimate": 0.006847005511672824,
+        "ci_low": -0.05183451173363753,
+        "ci_high": 0.06552852275698318,
+        "covered": true,
+        "naive_B3": -0.01903389531998012,
+        "abs_error": 0.006847005511672824,
+        "abs_error_B3": 0.01903389531998012
+      },
+      {
+        "factor_id": "F186",
+        "event": "REF",
+        "behaviour": "nc_thanks_info",
+        "level": "NC",
+        "truth": 0.0,
+        "estimate": -0.01658897360993599,
+        "ci_low": -0.07075335381631251,
+        "ci_high": 0.03757540659644052,
+        "covered": true,
+        "naive_B3": -0.0023536192900715514,
+        "abs_error": 0.01658897360993599,
+        "abs_error_B3": 0.0023536192900715514
+      },
+      {
+        "factor_id": "F188",
+        "event": "CHURN",
+        "behaviour": "nc_thanks_info",
+        "level": "NC",
+        "truth": 0.0,
+        "estimate": 0.008502969513505754,
+        "ci_low": -0.03312966427739744,
+        "ci_high": 0.05013560330440894,
+        "covered": true,
+        "naive_B3": 0.016814768560769813,
+        "abs_error": 0.008502969513505754,
+        "abs_error_B3": 0.016814768560769813
+      }
+    ]
+  },
+  "retrieval": {
+    "n_queries": 18,
+    "recall@10": 0.9388888888888888,
+    "recall_ci": [
+      0.8833333333333333,
+      0.9833333333333333
+    ],
+    "ndcg@10": 0.9353834691993733,
+    "ndcg_ci": [
+      0.8657417769288328,
+      0.9876973189440363
+    ]
+  },
+  "human_audit": {
+    "status": "human audit incomplete (0 human scores) or no judge scores for all answers"
+  }
+}
