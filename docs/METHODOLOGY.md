@@ -1,9 +1,4 @@
 # Methodology, Results and Discussion
-
-> **Scope and conventions.** Citations are given as (author, year) at the place where a paper is used; the full
-> references are in [`LITERATURE_REVIEW.md`](LITERATURE_REVIEW.md) (sections A–J), [`METHODOLOGY.md`](METHODOLOGY.md)
-> (Appendix B) and [`REAL_DATA_REVIEW.md`](REAL_DATA_REVIEW.md). Appendix A at the end lists which paper is used where.
->
 > **What the numbers are.** The hackathon corpus has no answer key, so the quantitative results come from (i) a
 > synthetic call centre whose true effects are known, and (ii) checks on the real data that need no causal truth: the
 > event labeller against a blind hand-labelled sample, a manual read of real transcripts, and the question parser.
