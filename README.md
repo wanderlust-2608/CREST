@@ -342,4 +342,5 @@ locked test set.
 pytest -q tests/                      # 127 tests
 python -m crest sync-cues --check     # the cue lexicons in crest/cues.py still equal the notebook's
 ```
-## For the updated system output, kindly run the file again. Due to shortage of time, the latest version was not able to submit on the deliverables link
+## For the updated system output, kindly run the file again. Due to the limited time, I was unable to submit the latest version of system output through the deliverables link.
+
