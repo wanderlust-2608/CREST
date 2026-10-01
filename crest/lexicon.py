@@ -440,7 +440,8 @@ def translate(text: str) -> tuple[str, str]:
         return text, ""
     for rx, rep in LANG_RES[lang]:
         text = rx.sub(rep, text)
-    return re.sub(r"\s+", " ", text).strip(" ?!.,"), lang
+    text = re.sub(r"(?<=\w)-(?=\s|$)|(?<=\s)-(?=\w)", " ", text)
+    return re.sub(r"\s+", " ", text).strip(" ?!.,-"), lang
 
 
 def vocabulary(texts) -> dict:

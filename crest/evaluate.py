@@ -277,8 +277,15 @@ def baseline_b0(engine, rows: list[dict]) -> dict:
             "note": "B0 answers from the top-10 windows; rates from hit counts; no premise or attribute checks"}
 
 
+def event_and_industry_ok(spec: dict | None, ex: dict) -> bool:
+    spec = spec or {}
+    filt = spec.get("filters") or {}
+    return bool(spec.get("event") == ex["event"] and (
+        ex.get("industry") is None or sorted(filt.get("industry", [])) == sorted(ex["industry"])))
+
+
 def baseline_b2(engine, rows: list[dict]) -> dict:
-    ok = []
+    ok, ok_system = [], []
     for s in rows:
         if s["category"] != "session":
             continue
@@ -286,11 +293,9 @@ def baseline_b2(engine, rows: list[dict]) -> dict:
             ex = t["expected"]
             if i == 0 or ex["route"] == "clarify":
                 continue
-            spec = engine.parser.parse(t["question"]).to_dict()
-            good = spec.get("event") == ex["event"] and (ex.get("industry") is None or sorted(
-                spec.get("filters", {}).get("industry", [])) == sorted(ex["industry"]))
-            ok.append(good)
-    return {"carry_over": boot_mean(ok)}
+            ok.append(event_and_industry_ok(engine.parser.parse(t["question"]).to_dict(), ex))
+            ok_system.append(event_and_industry_ok(t.get("spec"), ex))
+    return {"carry_over": boot_mean(ok), "carry_over_system_same_turns": boot_mean(ok_system)}
 
 
 def causal_validity(pipe, truth_calls: list[dict]) -> dict:
@@ -649,7 +654,9 @@ def render_report(res: dict, pipe) -> str:
               f"* Gates: {s['sentences_dropped_by_gates']} of {s['sentences']} sentences dropped ({json.dumps(s['dropped_by_gate'])}); "
               f"degraded answers {s['degraded_answers']}; wording violations after gates {s['wording_violations_after_gates']}.",
               f"* Follow-ups: carry-over {_ci(s['followup_carry_over'])}; route accuracy {_ci(s['followup_route_accuracy'])}.",
-              f"* Baseline B2 (free rewriting) carry-over: {_ci(s['B2']['carry_over'])}.",
+              f"* Baseline B2 (each follow-up read without the session state; event and industry of the later turns) "
+              f"carry-over: {_ci(s['B2']['carry_over'])}; the system on the same turns and slots: "
+              f"{_ci(s['B2'].get('carry_over_system_same_turns', {}))}.",
               f"* Baseline B0 (plain retrieval): premises corrected {_ci(s['B0'].get('premise_corrected', {}))}; unsupported "
               f"attributes flagged {_ci(s['B0'].get('unsupported_flagged', {}))}; absolute error of rates from search hits "
               f"{_ci(s['B0'].get('abs_error_of_rate_from_search_hits', {}), False)}.",
